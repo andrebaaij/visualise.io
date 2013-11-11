@@ -1,0 +1,54 @@
+@(user : UserIdentity)
+
+<div id="modal_login" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+	<div class="alert alert-danger">
+            Your session has timed out, please log in again.
+        </div>
+	<div class="login-wrapper">
+		<div class="clearfix login">
+			<h1>Login</h1>
+		<!--form action="/authenticate/userpass" class="form-horizontal" autocomplete="off" method="POST"-->
+			<fieldset>
+				<div class="control-group" id="username_field">
+					<label class="control-label" for="username">username</label>
+					<div class="controls">
+						<input type="text" id="username" name="username" value="@user.email" class="input-xlarge" placeholder="Email address"></input>
+					</div>
+				</div>
+				<div class="control-group" id="password_field">
+					<label class="control-label" for="password">password</label>
+					<div class="controls">
+						<input type="password" id="password" name="password" class="input-xlarge" placeholder="Password"></input>
+					</div>
+				</div>
+				<div class="form-actions">
+					<a id="submit" type="submit" class="btn login btn-primary">Login</a>
+				</div>
+			</fieldset>
+			
+		</div>
+	</div>
+</div>
+<script>
+	$('#modal_login #submit').on('click', function() {
+		console.log('submit login')
+
+		formData = {
+			username : $('#username').val(),
+			password : $('#password').val()
+		}
+		console.log(formData)
+		$.ajax({
+			type: "POST",
+			contentType: "text/json",
+			async: false,
+			url: "/authenticate/userpass",
+			data: JSON.stringify(formData),
+			error: function(data) {
+				bSuccess = false
+			}
+		})
+
+		$('#modal_login').modal('hide')
+	})
+</script>

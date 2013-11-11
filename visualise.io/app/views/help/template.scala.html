@@ -1,0 +1,518 @@
+@(user: models.UserIdentity)
+
+@page_header("documentation / template"){
+	<!--link rel="stylesheet/less" href="assets/stylesheets/bootstrap.less" type="text/css" /-->
+	<!--link rel="stylesheet/less" href="assets/stylesheets/responsive.less" type="text/css" /-->
+	<!--script src="assets/javascripts/less-1.3.3.min.js"></script-->
+	<!--append ‘#!watch’ to the browser URL, then refresh the page. -->
+	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
+	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap-responsive.min.css")" rel="stylesheet">
+	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap-glyphicons.css")" rel="stylesheet">
+	<link href="@controllers.routes.Assets.at("stylesheets/index.css")" rel="stylesheet">
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+				<script src="assets/javascript/html5shiv.js"></script>
+			<![endif]-->
+	<!-- Fav and touch icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="@controllers.routes.Assets.at("images/apple-touch-icon-144-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="@controllers.routes.Assets.at("images/apple-touch-icon-114-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="@controllers.routes.Assets.at("images/apple-touch-icon-72-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" href="@controllers.routes.Assets.at("images/apple-touch-icon-57-precomposed.png")">
+	<link rel="shortcut icon" href="@controllers.routes.Assets.at("images/favicon.png")">
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/scripts.js")"></script>
+}
+	<body class="light">
+	@navbar_fixed_top(user = user,"Documentation"){@if(1==1){}}{
+		<li><a href="@controllers.routes.Documentation.visualisation()" id="link_visualisationDocumentation">Visualisation</a></li>
+		<li><a href="@controllers.routes.Documentation.template()" id="link_templateDocumentation">Template</a></li>
+	}
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span3">
+					<div class="bs-sidebar hidden-print affix" data-spy="affix" role="complementary"> 
+			            <ul id="menu" class="nav bs-sidenav">
+							<li><a href="#doc-template">Template</a>
+								<ul class="nav">
+									<li><a href="#doc-template-metadata">Metadata</a></li>
+								</ul>
+							</li>
+							<li><a href="#doc-visualisation">Visualisation</a>
+								<ul class="nav">
+									<li><a href="#doc-visualisation-draw">Draw</a></li>
+									<li><a href="#doc-visualisation-parameters">Parameters</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#doc-menu">Menu</a>
+								<ul class="nav">
+									<li><a href="#doc-menu-panel">Panel</a></li>
+									<li><a href="#doc-menu-group">Group</a></li>
+									<li><a href="#doc-menu-table">Table</a></li>
+									<li><a href="#doc-menu-input">Input</a></li>
+									<li><a href="#doc-menu-select">Select</a></li>
+									<li><a href="#doc-menu-textarea">Textarea</a></li>
+								</ul>
+							</li>
+							<li>
+								<a href="#doc-datasets">Datasets</a>
+								<ul class="nav">
+									<li><a href="#doc-datasets-data">Data</a></li>
+									<li><a href="#doc-datasets-headers">Headers</a></li>
+									<li><a href="#doc-datasets-values">Values</a></li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="span9">
+					<div class="header-spacer"></div>
+					<div id="scrollContent">
+						<h2 id="doc-template">Template</h2>
+						<p class="lead">Enabling flexible visualisations.</p>
+						<p>All visualisations are based on a template, their blueprint, a template consists of multiple elements:</p>
+						<dl class="dl-horizontal">
+							<dt>Metadata</dt>
+							<dd>Template name, description, tags and definition</dd>
+							<dt>Visualisation</dt>
+							<dd>How to draw the visualisation</dd>
+							<dt>Menu</dt>
+							<dd>Make the visiualisation flexible</dd>
+							<dt>Datasets</dt>
+							<dd>Which data are we going to visualise?</dd>
+						</dl>
+						<p>In the next few paragraphs these elements are explained, if you have any questions or feel that this documentation is unclear/incomplete please contact me.</p>
+						<h3 id="doc-template-metadata">Metadata</h3>
+						<h4 id="doc-template-metadata-name">Name</h4>
+						<p>Pretty much speaks for itself, this is the name of the template and is a mandatory field.</p>
+						<h4 id="doc-template-metadata-description">Description</h4>
+						<p>The description of the template is not mandatory, but if you will be publishing your template for other users please make sure the description is clear and consice as to what visualisation can be made with the template.</p>
+						<h4 id="doc-template-metadata-tags">Tags</h4>
+						<p>The tags are used to identify published template in searches, make sure you have the right ones to identify the template.</p>
+						<div class="bs-callout bs-callout-info">
+							<p>Tags are seperated by commas.</p>
+						</div>
+						<h4 id="doc-template-metadata-definition">Definition</h4>
+						<p>In the definition the menu and visualisation are defined. this is done via the _vis javascript API, how this works can be found in the next paragraphs explaining how to draw the visualisation and menu...</p>
+						<div class="bs-callout bs-callout-danger">
+							<p>Do not use the javascript <b>_vis</b> object in your definition, as it might work different than expected or break certain functionality.</p>
+						</div>
+						<h2 id="doc-visualisation">Visualisation</h2>
+						<p>The visualisation definition must be solely defined using the <a href="http://www.d3js.org">d3.js</a> library and the available parameters.</p>
+						<h3 id="doc-visualisation-draw">draw</h3>
+						<div class="bs-example">
+<pre><span class="nx">draw</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">_vis</span><span class="p">.</span><span class="nx">visualisation</span><span class="p">.</span><span class="nx">DOM</span><span class="p">,</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">visualisation</span><span class="p">.</span><span class="nx">parameters</span><span class="p">,</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">datasets</span><span class="p">))</span> <span class="p">{</span>
+	<span class="c1">// Your drawing code goes here</span>
+<span class="p">})</span>
+</pre>
+					    </div>
+					    <h3 id="doc-visualisation-parameters">Parameters</h3>
+					    <p class="lead">Parameters explained.</p>
+						<h4>_vis.visualisation.DOM</h4>
+						<p>The DOM is where you append your svg/visualisation object to.</p>
+<div class="bs-example">
+<pre><span class="nx">draw</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">DOM</span><span class="p">,</span> <span class="nx">parameters</span><span class="p">,</span> <span class="nx">datasets</span><span class="p">))</span> <span class="p">{</span>
+	<span class="c1">// Your drawing code goes here</span>
+	<span class="nx">svg</span> <span class="o">=</span> <span class="nx">DOM</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'svg'</span><span class="p">);</span>
+<span class="p">})</span>
+</pre>
+</div>
+						<h4>_vis.visualisation.parameters</h4>
+						<p>This is the object which contians all user editable menu input/parameters (more details are in the next paragraph). The parameter object contains objects for the panel, group and input with a possible table between group and input. For example, a normal input it would be read like this:</p>
+						<p>		_vis.visualisation.parameters<b>[panelID][groupID][inputID]</b></p>
+						<p>It is also possible that a table contains input(s) these are obtained via the following object:</p>
+						<p>		_vis.visualisation.parameters<b>[panelID][groupID][tableID][inputID]</b></p>
+
+<div class="bs-example">
+<pre><span class="c1">// This examples creates a menu input element in the group dimension</span>
+<span class="c1">// which is placed in the default panel configuration.</span>
+<span class="c1">// In the draw function we take the value of this input to define the width of the svg.</span>
+
+<span class="nx">group_dimension</span> <span class="o">=</span> <span class="nx">panel_configuration</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="s1">'dimension'</span><span class="p">)</span>
+<span class="nx">input_width</span> <span class="o">=</span> <span class="nx">group_dimension</span><span class="p">.</span><span class="nx">addInput</span><span class="p">(</span><span class="s1">'width'</span><span class="p">)</span>
+<span class="nx">input_width</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s1">'Width'</span><span class="p">)</span>
+
+<span class="nx">draw</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">DOM</span><span class="p">,</span> <span class="nx">parameters</span><span class="p">,</span> <span class="nx">datasets</span><span class="p">))</span> <span class="p">{</span>
+	<span class="c1">// Your drawing code goes here</span>
+	<span class="nx">svg</span> <span class="o">=</span> <span class="nx">DOM</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s1">'svg'</span><span class="p">).</span><span class="nx">width</span><span class="p">(</span><span class="nx">parameters</span><span class="p">.</span><span class="nx">configuration</span><span class="p">.</span><span class="nx">dimension</span><span class="p">.</span><span class="nx">width</span><span class="p">);</span>
+<span class="p">})</span>
+</pre>
+</div>
+						<h4>_vis.datasets</h4>
+						<p>this object ontains all the datasets (only one is supported at the moment) defined for this template. At the moment the default and only dataset is named "Data".</p>
+<div class="bs-example">
+<pre><span class="nx">draw</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">DOM</span><span class="p">,</span> <span class="nx">parameters</span><span class="p">,</span> <span class="nx">datasets</span><span class="p">))</span> <span class="p">{</span>
+	<span class="c1">// Your drawing code goes here</span>
+	<span class="nx">csvData</span> <span class="o">=</span> </span><span class="nx">datasets</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">data</span>
+	<span class="nx">data</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">csv</span><span class="p">(</span><span class="nx">csvData</span><span class="p">)</span>
+<span class="p">})</span>
+</pre>
+</div>
+						<h1 id="doc-menu">Menu</h1>
+						<p class="lead">Parameterise your visualisation.</p>
+						<p>The menu is here to give users the ability to alter their visualisation. Based on normal html inputs such as input, select or textarea the visualisations parameters are filled. The menu is drawn in the order which it is initialised, it consists of the following elements:</p>
+
+						<div class="bs-example bs-result">
+							<div class="menu-content">
+							<div class="panel form-horizontal" id="x"><div class="panel-heading">Panel</div><div id="1"><label>Group</label><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Input</div><div id="input" class="input-group col-lg-10"><input type="text" class="form-control" id="inp"></div></div></div><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Textarea</div><div id="input" class="col-lg-10 input-group"><textarea type="text" class="form-control" id="inp"></textarea></div></div></div><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Select</div><div id="input" class="col-lg-10 input-group"><select id="inp" class="form-control"><option>option 1</option><option>option 2</option></select></div></div></div></div><div id="2"><label>Group</label><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Input</div><div id="input" class="input-group col-lg-10"><input type="text" class="form-control" id="inp"></div></div></div><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Textarea</div><div id="input" class="col-lg-10 input-group"><textarea type="text" class="form-control" id="inp"></textarea></div></div></div><div class="form-group"><div id="inputType"><div id="control-labell" class="col-lg-2 control-label" for="input_value">Select</div><div id="input" class="col-lg-10 input-group"><select id="inp" class="form-control"><option>option 1</option><option>option 2</option></select></div></div></div></div></div></div>
+						</div>
+
+						<h4 id="doc-menu-panel">Panel</h4>
+						<hp>A panel is a container which can contain multiple groups. Each panel can also have a label.</p>
+						
+						<div class="bs-example bs-constructor">
+<pre><span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">panel</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">[,</span> <span class="nx">heading</span> <span class="o">:</span> <span class="nb">String</span><span class="p">])</span> <span class="c1">//returns _vis.menu.element.panel</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addPanel</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">[,</span> <span class="nx">heading</span> <span class="o">:</span> <span class="nb">String</span><span class="p">])</span> <span class="c1">//returns _vis.menu.element.panel</span>
+</pre>
+</div>
+						<div class="bs-example">
+<pre><span class="c1">// Define our panel and give it a label.</span>
+<span class="nx">panel_styling</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addPanel</span><span class="p">(</span><span class="s2">"styling"</span><span class="p">,</span><span class="s2">"Styling"</span><span class="p">)</span>	
+</pre>
+</div>
+<div class="bs-example bs-result">
+<div class="menu-content"><div class="panel form-horizontal" id="styling"><div class="panel-heading">Styling</div></div></div>
+					    </div>
+
+						<div class="bs-callout bs-callout-info">
+							<h4>The configuration panel</h4>
+							<p>panel_Configuration is the first panel, if you want to add groups and/or elements to it, feel free to do so.</p>
+						</div>
+
+						<h4 id="doc-menu-group">Group</h4>
+						<p>A group can have a label and contain multiple input, select, textarea and table elements, as the name suggests it groups these elements per panel. Multiple groups per Panel are supported and can be handy in some situations.</p>
+
+						<div class="bs-example bs-constructor">
+<pre><span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">group</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span> <span class="c1">//returns _vis.menu.element.group</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">panel</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span> <span class="c1">//returns _vis.menu.element.group</span>
+</pre>
+						</div>
+
+						<div class="bs-example bs-function">
+<pre><span class="c1">// This function sets the label for the group</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">group</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="nx">label</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span>
+
+<span class="c1">// The next four functions each add a different element </span>
+<span class="c1">// to this group, in the next 4 paragraphs these elements are explained more</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">group</span><span class="p">.</span><span class="nx">addInput</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">group</span><span class="p">.</span><span class="nx">addSelect</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">group</span><span class="p">.</span><span class="nx">addTextarea</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">group</span><span class="p">.</span><span class="nx">addTable</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span>
+</pre>
+						</div>
+						
+						<div class="bs-example">
+<pre><span class="c1">// First define the panel which we are going to add the groups to:</span>
+<span class="nx">panel_styling</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addPanel</span><span class="p">(</span><span class="s2">"styling"</span><span class="p">,</span><span class="s2">"Styling"</span><span class="p">)</span>	
+
+<span class="c1">// Let's add our first group, which will contain inputs for styling text:</span>
+<span class="nx">group_text</span> <span class="o">=</span> <span class="nx">panel_styling</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)</span>
+<span class="nx">group_text</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s2">"Text"</span><span class="p">)</span>
+<span class="nx">input_textColor</span> <span class="o">=</span> <span class="nx">group_text</span><span class="p">.</span><span class="nx">addInput</span><span class="p">(</span><span class="s2">"color"</span><span class="p">)</span>
+<span class="nx">input_textColor</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s2">"Color"</span><span class="p">)</span>
+<span class="c1">// And our second and third which are groups for styling borders and the visualisation itself.</span>
+<span class="nx">group_border</span> <span class="o">=</span> <span class="nx">panel_styling</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="s2">"border"</span><span class="p">)</span>
+<span class="nx">group_border</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s2">"Border"</span><span class="p">)</span>
+<span class="nx">input_borderColor</span> <span class="o">=</span> <span class="nx">group_border</span><span class="p">.</span><span class="nx">addInput</span><span class="p">(</span><span class="s2">"color"</span><span class="p">)</span>
+<span class="nx">input_borderColor</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s2">"Color"</span><span class="p">)</span>
+
+<span class="nx">group_visualisation</span> <span class="o">=</span> <span class="nx">panel_styling</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="s2">"visualisation"</span><span class="p">)</span>
+<span class="nx">group_visualisation</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s2">"Visualisation"</span><span class="p">)</span>
+<span class="nx">input_visualisationColor</span> <span class="o">=</span> <span class="nx">group_visualisation</span><span class="p">.</span><span class="nx">addInput</span><span class="p">(</span><span class="s2">"color"</span><span class="p">)</span>
+<span class="nx">input_visualisationColor</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s2">"Color"</span><span class="p">)</span>
+</pre>
+</div>
+<div class="bs-example bs-result">
+<div class="menu-content"><div class="panel form-horizontal" id="styling"><div class="panel-heading">Styling</div><div id="text"><label>Text</label><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Color</div><div id="input" class="input-group col-lg-10"><input type="text" class="form-control" id="color"></div></div></div></div><div id="border"><label>Border</label><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Color</div><div id="input" class="input-group col-lg-10"><input type="text" class="form-control" id="color"></div></div></div></div><div id="visualisation"><label>Visualisation</label><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Color</div><div id="input" class="input-group col-lg-10"><input type="text" class="form-control" id="color"></div></div></div></div></div></div>
+						</div>
+						<h4 id="doc-menu-table">Table</h4>
+						<p>Tables can be used to group sets of inputs together, a table always consists of two columns. The first column can only contain text, the second column can contain text or an input/select/textarea.</p>
+						<div class="bs-example bs-constructor">
+<pre><span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">table</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span> <span class="c1">//returns _vis.menu.element.table</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">group</span><span class="p">.</span><span class="nx">addTable</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span> <span class="c1">//returns _vis.menu.element.table</span>
+</pre>
+						</div>
+
+						<div class="bs-example bs-function">
+<pre><span class="c1">// Set the headers for the table</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">table</span><span class="p">.</span><span class="nx">setHeaders</span><span class="p">(</span><span class="nx">header1</span> <span class="o">:</span> <span class="nb">String</span><span class="p">,</span> <span class="nx">header2</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span> 
+
+<span class="c1">// Add a row to the table</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">table</span><span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="nx">col1</span> <span class="o">:</span> <span class="nb">String</span><span class="p">,</span> <span class="nx">col2</span> <span class="o">:</span> <span class="p">{</span><span class="nb">String</span><span class="p">,</span><span class="nx">Input</span><span class="p">,</span><span class="nx">Select</span><span class="p">,</span><span class="nx">TextArea</span><span class="p">})</span>
+</pre>
+						</div>
+
+						<div class="bs-example">
+<pre><span class="c1">// Add the panel</span>
+<span class="nx">panel_styling</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addPanel</span><span class="p">(</span><span class="s2">"styling"</span><span class="p">,</span><span class="s2">"Styling"</span><span class="p">)</span>
+<span class="c1">// And the group</span>
+    <span class="nx">group_fill</span> <span class="o">=</span> <span class="nx">panel_styling</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="s2">"fill"</span><span class="p">)</span>
+    <span class="nx">group_fill</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s2">"Fill:"</span><span class="p">)</span>
+
+<span class="c1">// Add the table with inputs:</span>
+      <span class="nx">table_background</span> <span class="o">=</span> <span class="nx">group_fill</span><span class="p">.</span><span class="nx">addTable</span><span class="p">(</span><span class="s2">"background"</span><span class="p">)</span>
+        <span class="c1">// Set the headers</span>
+        <span class="nx">table_background</span><span class="p">.</span><span class="nx">setHeaders</span><span class="p">(</span><span class="s1">'Age'</span><span class="p">,</span><span class="s1">'Color'</span><span class="p">)</span>
+        <span class="c1">// Add the different inputs</span>
+        <span class="nx">input1</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">input</span><span class="p">(</span><span class="s2">"agegroup1"</span><span class="p">)</span>
+        <span class="nx">table_background</span><span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="s1">'0-20'</span><span class="p">,</span> <span class="nx">input1</span><span class="p">)</span>
+
+        <span class="nx">input2</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">input</span><span class="p">(</span><span class="s2">"agegroup2"</span><span class="p">)</span>
+        <span class="nx">table_background</span><span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="s1">'21-50'</span><span class="p">,</span> <span class="nx">input2</span><span class="p">)</span>
+
+        <span class="nx">input3</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">input</span><span class="p">(</span><span class="s2">"agegroup3"</span><span class="p">)</span>
+        <span class="nx">table_background</span><span class="p">.</span><span class="nx">addRow</span><span class="p">(</span><span class="s1">'51-99'</span><span class="p">,</span> <span class="nx">input3</span><span class="p">)</span>
+</pre>
+</div>
+<div class="bs-example bs-result">
+<div class="menu-content"><div class="panel form-horizontal" id="styling"><div class="panel-heading">Styling</div><div id="fill"><label>Fill:</label><table id="background" class="table table-hover form-horizontal"><thead><tr><th>Age</th><th>Color</th></tr></thead><tbody><tr id="0"><td id="1">0-20</td><td id="2"><div class="form-group"><div id="inputType"><div id="input" class="input-group col-lg-12"><input type="text" class="form-control" id="agegroup1"></div></div></div></td></tr><tr id="1"><td id="1">21-50</td><td id="2"><div class="form-group"><div id="inputType"><div id="input" class="input-group col-lg-12"><input type="text" class="form-control" id="agegroup2"></div></div></div></td></tr><tr id="2"><td id="1">51-99</td><td id="2"><div class="form-group"><div id="inputType"><div id="input" class="input-group col-lg-12"><input type="text" class="form-control" id="agegroup3"></div></div></div></td></tr></tbody></table></div></div></div>
+						</div>
+
+						<h4 id="doc-menu-input">Input</h4>
+						<p>This menu element is the standard html input, with an added label.</p>
+
+						<div class="bs-example bs-constructor">
+<pre><span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">input</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span> <span class="c1">//returns _vis.menu.element.input</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">group</span><span class="p">.</span><span class="nx">addInput</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span> <span class="c1">//returns _vis.menu.element.input</span>
+</pre>
+						</div>
+	
+						<div class="bs-example bs-function">
+<pre><span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">input</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="nx">label</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span>
+</pre>
+						</div>
+
+						<div class="bs-example">
+<pre><span class="c1">// First define the panel which we are going to add the group/input to</span>
+<span class="nx">panel_styling</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addPanel</span><span class="p">(</span><span class="s2">"styling"</span><span class="p">,</span><span class="s2">"Styling"</span><span class="p">)</span>	
+
+<span class="c1">// Let's add a group</span>
+<span class="nx">group_text</span> <span class="o">=</span> <span class="nx">panel_styling</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="s2">"text"</span><span class="p">)</span>
+
+<span class="c1">// And here is our input:</span>
+<span class="nx">input_textColor</span> <span class="o">=</span> <span class="nx">group_text</span><span class="p">.</span><span class="nx">addInput</span><span class="p">(</span><span class="s2">"color"</span><span class="p">)</span>
+<span class="nx">input_textColor</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s2">"Color"</span><span class="p">)</span>
+</pre>
+</div>
+<div class="bs-example bs-result">
+<div class="menu-content"><div class="panel form-horizontal" id="styling"><div class="panel-heading">Styling</div><div id="text"><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Color</div><div id="input" class="input-group col-lg-10"><input type="text" class="form-control" id="color"></div></div></div></div></div></div>
+						</div>
+
+						<h4 id="doc-menu-select">Select</h4>
+						<p>This menu element is the standard html select, with an optional label. Every select must have one or more options in order to be usefull, these can be added via this function. Provide a value and a label which the user can select.</p>
+
+						<div class="bs-example bs-constructor">
+<pre><span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">select</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span> <span class="c1">//returns _vis.menu.element.select</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">group</span><span class="p">.</span><span class="nx">addSelect</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span> <span class="c1">//returns _vis.menu.element.select</span>
+</pre>
+						</div>
+
+						<div class="bs-example bs-function">
+<pre><span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="nx">label</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">select</span><span class="p">.</span><span class="nx">addOption</span><span class="p">(</span><span class="nx">value</span> <span class="o">:</span> <span class="nb">String</span><span class="p">,</span> <span class="nx">label</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span>
+</pre>
+						</div>
+
+						<div class="bs-example">
+<pre><span class="c1">// First define the panel which we are going to add the group/input to</span>
+<span class="nx">panel_styling</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addPanel</span><span class="p">(</span><span class="s1">'styling'</span><span class="p">,</span><span class="s1">'Styling'</span><span class="p">)</span>	
+
+<span class="c1">// Let's add a group</span>
+<span class="nx">group_text</span> <span class="o">=</span> <span class="nx">panel_styling</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="s1">'text'</span><span class="p">)</span>
+
+<span class="c1">// And here is our input:</span>
+<span class="nx">select_textColor</span> <span class="o">=</span> <span class="nx">group_text</span><span class="p">.</span><span class="nx">addSelect</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span>
+<span class="nx">select_textColor</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s1">'Color'</span><span class="p">)</span>
+<span class="nx">select_textColor</span><span class="p">.</span><span class="nx">addOption</span><span class="p">(</span><span class="s1">'#fff'</span><span class="p">,</span><span class="s1">'White'</span><span class="p">)</span>
+<span class="nx">select_textColor</span><span class="p">.</span><span class="nx">addOption</span><span class="p">(</span><span class="s1">'#ccc'</span><span class="p">,</span><span class="s1">'Grey'</span><span class="p">)</span>
+<span class="nx">select_textColor</span><span class="p">.</span><span class="nx">addOption</span><span class="p">(</span><span class="s1">'#000'</span><span class="p">,</span><span class="s1">'Black'</span><span class="p">)</span>
+</pre>
+</div>
+<div class="bs-example bs-result">
+<div class="menu-content"><div class="panel form-horizontal" id="styling"><div class="panel-heading">Styling</div><div id="text"><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Color</div><div id="input" class="col-lg-10 input-group"><select id="color" class="form-control"><option value="#fff">White</option><option value="#ccc">Grey</option><option value="#000" selected="selected">Black</option></select></div></div></div></div></div></div>
+						</div>
+
+						<h4 id="doc-menu-textarea">Textarea</h4>
+						<p>This menu element is the standard html textarea, with an added label.</p>
+
+						<div class="bs-example bs-constructor">
+<pre><span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">textarea</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span> <span class="c1">//returns _vis.menu.element.textarea</span>
+<span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">group</span><span class="p">.</span><span class="nx">addTextarea</span><span class="p">(</span><span class="nx">id</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span> <span class="c1">//returns _vis.menu.element.textarea</span>
+</pre>
+						</div>
+
+						<div class="bs-example bs-function">
+<pre><span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">element</span><span class="p">.</span><span class="nx">textarea</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="nx">label</span> <span class="o">:</span> <span class="nb">String</span><span class="p">)</span>
+</pre>
+						</div>
+
+						<div class="bs-example">
+<pre><span class="c1">// First define the panel which we are going to add the group/input to</span>
+<span class="nx">panel_styling</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addPanel</span><span class="p">(</span><span class="s1">'styling'</span><span class="p">,</span><span class="s1">'Styling'</span><span class="p">)</span>	
+
+<span class="c1">// Let's add a group</span>
+<span class="nx">group_text</span> <span class="o">=</span> <span class="nx">panel_styling</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="s1">'text'</span><span class="p">)</span>
+
+<span class="c1">// And here is our input:</span>
+<span class="nx">textarea_textColor</span> <span class="o">=</span> <span class="nx">group_text</span><span class="p">.</span><span class="nx">addTextarea</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span> <span class="c1">// No idea why anyone would use a textarea for a color, but here it is :)</span>
+<span class="nx">textarea_textColor</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s1">'Color'</span><span class="p">)</span>
+</pre>
+</div>
+<div class="bs-example bs-result">
+<div class="menu-content"><div class="panel form-horizontal" id="styling"><div class="panel-heading">Styling</div><div id="text"><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Color</div><div id="input" class="col-lg-10 input-group"><textarea type="text" class="form-control" id="color"></textarea></div></div></div></div></div></div>
+						</div>
+
+						
+						
+						<h2 id="doc-datasets">DataSets</h2>
+						<p class="lead">What will be visualised?</p>
+						<p>Most of the visualisations will want to visualise some data, any data. At the moment only one default dataset named "data" is supported.</p>
+						<h3 id="doc-datasets-data">Data</h3>
+						<p>In the data tab it is possible to add comma seperated data, after that it is available as a parameter in the <a href="#doc-visualisation-parameters">draw function</a> for use. Some basic information on the datasets are available through functions or arrays. If you have any suggestions for other functions data, please let us know!</p>
+<div class="bs-example">
+<pre><span class="nx">draw</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">DOM</span><span class="p">,</span> <span class="nx">parameters</span><span class="p">,</span> <span class="nx">datasets</span><span class="p">))</span> <span class="p">{</span>
+	<span class="c1">// Your drawing code goes here</span>
+	<span class="nx">csvData</span> <span class="o">=</span> </span><span class="nx">datasets</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">data</span>
+	<span class="nx">data</span> <span class="o">=</span> <span class="nx">d3</span><span class="p">.</span><span class="nx">csv</span><span class="p">(</span><span class="nx">csvData</span><span class="p">)</span>
+<span class="p">})</span>
+</pre>
+</div>
+						<h3 id="doc-datasets-headers">Headers</h3>
+						<p></p>
+						<h5>_vis.datasets.[datasetName].headers</h5>
+						<div class="bs-example">
+<pre><span class="nx">panelData</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addPanel</span><span class="p">(</span><span class="s2">"data"</span><span class="p">,</span><span class="s2">"Data"</span><span class="p">)</span>
+     <span class="nx">panelData_groupData</span> <span class="o">=</span> <span class="nx">panelData</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="s2">"data"</span><span class="p">)</span>
+       <span class="nx">panelData_groupData_selectLabel</span> <span class="o">=</span> <span class="nx">panelData_groupData</span><span class="p">.</span><span class="nx">addSelect</span><span class="p">(</span><span class="s2">"label"</span><span class="p">)</span>
+        <span class="nx">panelData_groupData_selectLabel</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s2">"Label"</span><span class="p">)</span>
+        <span class="nx">$</span><span class="p">.</span><span class="nx">each</span><span class="p">(</span><span class="nx">_vis</span><span class="p">.</span><span class="nx">datasets</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">headers</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">index</span><span class="p">,</span> <span class="nx">value</span><span class="p">){</span>
+           <span class="nx">panelData_groupData_selectLabel</span><span class="p">.</span><span class="nx">addOption</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span><span class="nx">value</span><span class="p">)</span>
+        <span class="p">})</span>
+</pre>
+						</div>
+						<h5>_vis.datasets.[datasetName].numericHeaders</h5>
+						<div class="bs-example">
+<pre><span class="c1">// First define the panel which we are going to add the group/input to</span>
+<span class="nx">panel_styling</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addPanel</span><span class="p">(</span><span class="s1">'styling'</span><span class="p">,</span><span class="s1">'Styling'</span><span class="p">)</span>	
+
+<span class="c1">// Let's add a group</span>
+<span class="nx">group_text</span> <span class="o">=</span> <span class="nx">panel_styling</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="s1">'text'</span><span class="p">)</span>
+
+<span class="c1">// And here is our input:</span>
+<span class="nx">textarea_textColor</span> <span class="o">=</span> <span class="nx">group_text</span><span class="p">.</span><span class="nx">addTextarea</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span> <span class="c1">// No idea why anyone would use a textarea for a color, but here it is :)</span>
+<span class="nx">textarea_textColor</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s1">'Color'</span><span class="p">)</span>
+</pre>
+</div>
+<div class="bs-example bs-result">
+<div class="menu-content">
+<div class="panel form-horizontal" id="styling"><div class="panel-heading">Styling</div><div id="text"><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Color</div><div id="input" class="col-lg-10 input-group"><textarea type="text" class="form-control" id="color"></textarea></div></div></div></div></div></div>
+						</div>
+						<h3 id="doc-datasets-values">Values</h3>
+						<h5>_vis.datasets.[datasetName].getColumnValuesByHeader</h5>
+						<div class="bs-example">
+<pre><span class="c1">// First define the panel which we are going to add the group/input to</span>
+<span class="nx">panel_styling</span> <span class="o">=</span> <span class="nx">_vis</span><span class="p">.</span><span class="nx">menu</span><span class="p">.</span><span class="nx">addPanel</span><span class="p">(</span><span class="s1">'styling'</span><span class="p">,</span><span class="s1">'Styling'</span><span class="p">)</span>	
+
+<span class="c1">// Let's add a group</span>
+<span class="nx">group_text</span> <span class="o">=</span> <span class="nx">panel_styling</span><span class="p">.</span><span class="nx">addGroup</span><span class="p">(</span><span class="s1">'text'</span><span class="p">)</span>
+
+<span class="c1">// And here is our input:</span>
+<span class="nx">textarea_textColor</span> <span class="o">=</span> <span class="nx">group_text</span><span class="p">.</span><span class="nx">addTextarea</span><span class="p">(</span><span class="s1">'color'</span><span class="p">)</span> <span class="c1">// No idea why anyone would use a textarea for a color, but here it is :)</span>
+<span class="nx">textarea_textColor</span><span class="p">.</span><span class="nx">setLabel</span><span class="p">(</span><span class="s1">'Color'</span><span class="p">)</span>
+</pre>
+<div class="panel form-horizontal" id="styling"><div class="panel-heading">Styling</div><div id="text"><div class="form-group"><div id="inputType"><div id="label" class="col-lg-2 control-label" for="input_value">Color</div><div id="input" class="col-lg-10 input-group"><textarea type="text" class="form-control" id="color"></textarea></div></div></div></div></div>
+						</div>
+						<p></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script>
+// NOTICE!! DO NOT USE ANY OF THIS JAVASCRIPT
+// IT'S ALL JUST JUNK FOR OUR DOCS!
+// ++++++++++++++++++++++++++++++++++++++++++
+
+!function ($) {
+
+  $(function(){
+
+    var $window = $(window)
+    var $body   = $(document.body)
+
+    var navHeight = $('.navbar').outerHeight(true) + 10
+
+    $body.scrollspy({
+      target: '.bs-sidebar',
+      offset: navHeight
+    })
+
+    $window.on('load', function () {
+      $body.scrollspy('refresh')
+    })
+
+    $('.bs-docs-container [href=#]').click(function (e) {
+      e.preventDefault()
+    })
+
+    // back to top
+    setTimeout(function () {
+      var $sideBar = $('.bs-sidebar')
+
+      $sideBar.affix({
+        offset: {
+          top: function () {
+            var offsetTop      = $sideBar.offset().top
+            var sideBarMargin  = parseInt($sideBar.children(0).css('margin-top'), 10)
+            var navOuterHeight = $('.bs-docs-nav').height()
+
+            return (this.top = offsetTop - navOuterHeight - sideBarMargin)
+          }
+        , bottom: function () {
+            return (this.bottom = $('.bs-footer').outerHeight(true))
+          }
+        }
+      })
+    }, 100)
+
+    setTimeout(function () {
+      $('.bs-top').affix()
+    }, 100)
+
+    // tooltip demo
+    $('.tooltip-demo').tooltip({
+      selector: "[data-toggle=tooltip]",
+      container: "body"
+    })
+
+    $('.tooltip-test').tooltip()
+    $('.popover-test').popover()
+
+    $('.bs-docs-navbar').tooltip({
+      selector: "a[data-toggle=tooltip]",
+      container: ".bs-docs-navbar .nav"
+    })
+
+    // popover demo
+    $("[data-toggle=popover]")
+      .popover()
+
+    // button state demo
+    $('#fat-btn')
+      .click(function () {
+        var btn = $(this)
+        btn.button('loading')
+        setTimeout(function () {
+          btn.button('reset')
+        }, 3000)
+      })
+
+    // carousel demo
+    $('.bs-docs-carousel-example').carousel()
+})
+
+}(window.jQuery)
+
+		</script>
+	</body>
+@page_footer()

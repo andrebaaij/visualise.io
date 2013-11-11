@@ -1,0 +1,47 @@
+html {
+
+}
+
+body {
+	padding-top: 60px;
+}
+
+.my-input
+{
+    width: 100%;
+    padding: 4px 0 4px 0 !important;
+}
+
+.smallSelect {
+	width: 50px;
+	padding-left: 0;
+}
+
+textarea {
+	resize:vertical;
+}
+
+
+#table_input_fillColor input {
+	margin:0
+}
+#table_input_fillColor thead tr th {
+	font-weight: 300;
+	font-style: italic;
+}
+
+h1 {
+	font-size: 20px;
+	margin: 5px 0 20px 0;
+	line-height: 0;
+}
+
+.input-group-addon-left {
+    min-width:75px;
+    text-align:left;
+}
+
+.tab-content {
+	padding: 25px;
+}
+

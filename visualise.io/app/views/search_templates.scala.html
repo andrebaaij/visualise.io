@@ -1,0 +1,100 @@
+@(user: UserIdentity)
+<div class="container-fluid select">
+	<div class="row-fluid">
+		<div class="search"><input id="filter" placeholder="Search keywords"/></div>
+	</div>
+	<div class="row-fluid">
+		
+	</div>
+	<div class="row-fluid">
+		<table class="table selectList">
+			<tbody id="templateList" class="list">
+
+			</tbody>
+		</table>
+		<a id="moreTemplates" class="btn" href="#">Load more templates...</a>
+		<div id="noMoreTemplates" class="info">No more templates found...</div>
+		<div id="noTemplates" class="info">No templates match your criteria...</div>
+	</div>
+</div>
+<script type="text/javascript">
+var start = 0,
+	num = 50,
+	isPreviousEventComplete = true;
+
+function addTemplatesToList() {
+	if (isPreviousEventComplete) {
+		isPreviousEventComplete = false;
+		$('#moreTemplates').hide();
+
+		$("input#filter").prop('disabled', true);
+		
+		$.ajax({
+			type: "GET",
+			url: "/templates?q=" + $('#filter').val() + "&start=" + start + "&sort=popular&num=" + num + "&sortby=desc",
+			success: function (response) {
+				$template = $('#templateList')
+				$.each(response.items, function(index, item) {
+					$row =	$('<tr class="option"></tr>').attr("id",item.id).attr("publicationId", item.publicationId)
+								.append($('<td class="image"></td>').css('background-image','url(' + item.thumbnail + ')'))
+								.append($('<td class="text"></td>').append("<b>"+item.name+"</b><p>" +item.description+"</p>"))
+								
+					if (start + index === 0) {
+						$('#modal_newVisualisation_templateId').val(item.id)
+						$('#modal_newVisualisation_templatePublicationId').val($(this).attr("publicationId"))
+						$row.toggleClass("selected")
+					}
+					
+					$row.click(function() {
+						$('#templateList tr').removeClass("selected")
+						$(this).toggleClass("selected")
+						$('#modal_newVisualisation_templateId').val($(this).attr("id"))
+						$('#modal_newVisualisation_templatePublicationId').val($(this).attr("publicationId"))
+					})
+					
+					$template.append($row)
+				})
+				
+				
+				
+				isPreviousEventComplete = true;
+				$("input#filter").prop('disabled', false);
+				
+				if (start === 0 && response.items.length === 0) {
+					$('#noTemplates').show();
+				}
+				else if (response.items.length === num) {
+					$('#moreTemplates').show();
+				} else {
+					$('#noMoreTemplates').show();
+				}
+
+				start = start + response.items.length
+			},
+			error: function (error) {
+				isPreviousEventComplete = true;
+				$('#moreTemplates').show();
+				alert(error);
+			}
+		});
+	}
+}
+
+$('input#filter').on('blur',function() {
+	$('#noMoreTemplates').hide();
+	$('#noTemplates').hide();
+	$('#templateList').empty()
+	$('#modal_newVisualisation_templateId').val(null)
+	$('#modal_newVisualisation_templatePublicationId').val(null)
+	start = 0
+	addTemplatesToList()
+})
+
+$('#moreTemplates').on('click', function() {
+	addTemplatesToList()
+})
+//fill first batch
+$('#noMoreTemplates').hide();
+$('#noTemplates').hide();
+addTemplatesToList()
+</script>

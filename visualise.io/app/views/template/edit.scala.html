@@ -1,0 +1,212 @@
+@(user: models.UserIdentity, template: models.Template, sandboxURL: String)
+
+@page_header(template.getName + " / edit"){
+	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
+	<link href="@controllers.routes.Assets.at("stylesheets/index.min.css")" rel="stylesheet">
+<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+<!--[if lt IE 9]>
+			<script src="assets/javascript/html5shiv.js"></script>
+		<![endif]-->
+<!-- Fav and touch icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="@controllers.routes.Assets.at("images/apple-touch-icon-144-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="@controllers.routes.Assets.at("images/apple-touch-icon-114-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="@controllers.routes.Assets.at("images/apple-touch-icon-72-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" href="@controllers.routes.Assets.at("images/apple-touch-icon-57-precomposed.png")">
+	<link rel="shortcut icon" href="@controllers.routes.Assets.at("images/favicon.png")">
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+}  
+<body class="light minimal" style="height: 100%">
+	@navbar_fixed_top(user = user,"Template"){<ul id="tabs" class="nav nav-tabs">
+					<li class="active"><a href="#tab_visualisation" data-toggle="tab">Visualisation</a></li>
+					<li><a href="#tab_data" data-toggle="tab">Data</a></li>
+					<li><a href="#tab_template" data-toggle="tab">Template</a></li>
+				</ul>}{
+		<li><a href="#" id="link_save">Save</a></li>
+		<li><a href="#" id="link_publish">Publish</a></li>
+		<li><a href="#" id="link_export">Export</a></li>
+		<li><a href="@controllers.routes.User.getOverview(user.getId())">Close</a></li>
+	}
+	<div class="header-spacer minimal"></div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="tab-content">
+					<div class="tab-pane active" id="tab_visualisation">
+					</div>
+					<div class="tab-pane" id="tab_data">
+						<div>
+							<H2>Data</H2>
+							<h4>Paste your data in csv format here:</h4>
+							<textarea class="form-control" id="data" rows="10" class="span10">age,population
+<5,2704659
+5-13,4499890
+14-17,2159981
+18-24,3853788
+25-44,14106543
+45-64,8819342
+=65,612463</textarea>
+						</div>
+					</div>
+					<div class="tab-pane" id="tab_template">
+						<div class="container-fluid">
+							<div class="row-fluid">
+								<div class="col-lg-3">
+									<div id="menu" class="container-fluid menu">
+										<div class="col-lg-12 menu-content">
+											<div class="panel form-horizontal" id="configuration">
+												<div class="panel-heading">Settings</div>
+												<div id="template">
+													<div class="form-group">
+														<div id="inputType">
+															<div id="label" class="col-lg-2 control-label" for="input_value">Name</div>
+															<div id="input" class="input-group col-lg-10">
+																<input type="text" class="form-control" id="input_name" value="@template.getName()">
+															</div>
+														</div>
+													</div>
+													<div class="form-group">
+														<div id="inputType">
+															<div id="label" class="col-lg-2 control-label" for="input_description">Desc</div>
+															<div id="input" class="col-lg-10 input-group">
+																<textarea type="text" class="form-control" id="input_description">@template.getDescription()</textarea>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-9 editorPane">
+									<div id="editor" class="editor">// First define your menu
+panel_example = _vis.menu.addPanel("example", "Example")
+group_example = panel_example.addGroup("example")
+textarea_example = group_example.addTextarea("example")
+textarea_example.setLabel("Example")
+
+_vis.visualisation.draw(function(DOM, parameters, datasets) {
+	data = d3.csv.parse(datasets.data.data);
+	svg = DOM.append("svg");
+})
+
+
+</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="modal_publish" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h1 id="myModalLabel">Publish your template</h1>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+						<div id="inputType">
+							<div id="label" class="col-lg-2 control-label" for="input_tags">Tags</div>
+							<div id="input" class="col-lg-10 input-group">
+								<input type="text" class="form-control" id="input_tags" value="@template.getTags()" placeholder="Comma seperated tag list, so people can find your template!"/>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div>
+					<img id="thumbnail_visualisation_publish" class="thumbnail" style="position: relative; width:100%;" />
+				</div>
+				<div style="clear:both;"></div>
+				<div class="modal-footer">
+					<a href="#" id="modal_publish_link_publish" data-dismiss="modal" aria-hidden="true" class="btn btn-primary" >Publish</a>
+					<p>Your template is published under the <a href="http://choosealicense.com/licenses/mit/">MIT</a> license, unless otherwise stated in the draw function.</p>
+				</div>
+			</div>
+		</div>
+	</div> 
+	<div id="modal_save" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h1 id="myModalLabel">Save your template</h1>
+				</div>
+				<div style="float:left; position:relative; overflow:hidden; width:100%;">
+					<img id="thumbnail_visualisation_save" class="thumbnail" style="position: relative; width:100%;" />
+				</div>
+				<div style="clear:both;"></div>
+				<canvas id="canvas"></canvas>
+				<div class="modal-footer">
+					<a href="#" id="modal_save_link_save" data-dismiss="modal" aria-hidden="true" class="btn btn-primary" >Save</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="modal_export" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h1 id="myModalLabel">Export your visualisation</h1>
+				</div>
+				<div class="modal-footer">
+					<a href="#" id="modal_export_link_svg" data-dismiss="modal" aria-hidden="true" class="btn btn-primary half" ><span class="glyphicon glyphicon-circle-arrow-down button-icon"></span>SVG</a>
+					<a href="#" id="modal_export_link_png" data-dismiss="modal" aria-hidden="true" class="btn btn-primary half" ><span class="glyphicon glyphicon-circle-arrow-down button-icon"></span>PNG</a>
+					<h2>Embed:</h2>
+					<textarea id="modal_export_embed_html" style="min-height: 500px; font-size: 12px;"></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	@modal_login(user)
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/svgfix-0.2.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/canvg.js")"></script>
+	<script src="@controllers.routes.Assets.at("javascripts/ace/ace.js")" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/_vis.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.imgareaselect.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/pixastic.custom.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/easyXDM/easyXDM.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.base64.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/json2.min.js")"></script>
+	<link rel="stylesheet" type="text/css" href="@controllers.routes.Assets.at("stylesheets/imgareaselect-default.css")" />
+	<script type="text/javascript">
+		easyXDM.DomHelper.requiresJSON("/json2.js");
+	</script>
+	<script>
+		$(document).ready(function () {
+			// Initialise socket
+			socket = new easyXDM.Socket({
+				remote: "@sandboxURL/visualisation/edit", // the path to the provider
+				onMessage:function(message, origin) {
+					message = JSON.parse(message)
+					if (typeof message.source !== 'undefined' && typeof message.source.callback !== 'undefined') {
+						_vis.common.getFunctionFromString(message.source.callback)(message.body)
+					}
+					else if (message.action === "update"){
+						if (message.resource === 'setting') {	
+							_vis.common.updateSettings(message.body)
+						}
+					}
+				},
+				container:"tab_visualisation"
+			});
+			
+			_vis.template.id = @template.getApplication_id()
+			_vis.template.load(@Html(template.getDecodedDefinition()))
+			_vis.template.UI.initialise()
+		});
+
+			function closeEditorWarning(){
+				if (_vis.common.settings.objectHasChanges === true) {
+					return 'If you leave this page, any unsaved changes to your template will be lost.'
+				}
+			}
+
+			window.onbeforeunload = closeEditorWarning
+	</script>
+</body>
+@page_footer()

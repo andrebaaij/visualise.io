@@ -1,0 +1,35 @@
+@(user: UserIdentity, pageName: String)(tabs: Html)(left_content: Html)
+<div class="navbar navbar-primary navbar-fixed-top">
+	<div class="nav-collapse navbar-collapse collapse">
+		<ul class="nav navbar-nav">
+			<li class="logo"><a href="@controllers.routes.Application.index()" id="link_index"><img src="@controllers.routes.Assets.at("images/apple-touch-icon-57-precomposed.png")">Visualise.io</a></li>
+			@if(pageName != "") {
+			<li><a id="pageName" class="pageName">@pageName</a></li>
+			}
+			@tabs
+		</ul>
+		<ul class="nav navbar-nav pull-right">
+			<li><a href="@controllers.routes.Documentation.visualisation()" id="link_documentation">Documentation</a></li>
+			@if(user == null) {
+			<li><a href="@securesocial.controllers.routes.Registration.startSignUp" id="link_signup">Signup</a></li>
+			<li><a href="@securesocial.controllers.routes.LoginPage.login" id="link_login">Login</a></li>
+			} else {
+			<li class="dropdown">
+				<a href="@controllers.routes.User.getOverview(user.getId)" class="dropdown-toggle" data-toggle="dropdown">@user.fullName <b class="caret"></b></a>
+				<ul class="dropdown-menu">
+					<li><a href="@controllers.routes.User.getOverview(user.getId)" id="link_logout">Overview</a></li>
+					<li><a href="@securesocial.controllers.routes.LoginPage.logout()" id="link_logout">Logout</a></li>
+				</ul>
+			</li>
+			}
+		</ul>
+	</div>
+</div>
+@if(left_content.toString != "") {
+<div class="navbar navbar-fixed-top navbar-secondary">
+	<div class="nav-collapse navbar-collapse collapse"
+		style="height: 0px;">
+		<ul class="nav navbar-nav">@left_content</ul>
+	</div>
+</div>
+}

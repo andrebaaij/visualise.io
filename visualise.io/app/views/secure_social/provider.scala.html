@@ -1,0 +1,62 @@
+@(request: play.api.mvc.RequestHeader, providerId: String, loginForm: Option[play.api.data.Form[(String, String)]] = None)
+
+@import securesocial.core.Registry
+@import securesocial.core.IdentityProvider
+@import securesocial.core.providers.UsernamePasswordProvider
+@import securesocial.core.AuthenticationMethod._
+@import securesocial.core.providers.utils.RoutesHelper
+@import play.api.Logger
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(securesocial.views.html.inputFieldConstructor.f) }
+
+@Registry.providers.get(providerId).map { provider =>
+            @if( provider.authMethod == OAuth1 || provider.authMethod == OAuth2 ) {
+                @defining( "securesocial/images/providers/%s.png".format(provider.ssId) ) { imageUrl =>
+                    <a href="@provider.authenticationUrl"> <img src="@RoutesHelper.at(imageUrl)"/></a>
+                }
+            }
+
+            @if( provider.authMethod == UserPassword ) {
+            <div class="clearfix login-wrapper">
+                <div class="clearfix login">
+                    <h1>Login</h1>
+                    <form action = "@securesocial.core.providers.utils.RoutesHelper.authenticateByPost("userpass").absoluteURL(IdentityProvider.sslEnabled)(request)"
+                          class="form-horizontal" autocomplete="off" method="POST">
+                        <fieldset>
+
+                            @if( UsernamePasswordProvider.withUserNameSupport ) {
+                                @helper.inputText(
+                                    loginForm.get("username"),
+                                    'class -> "input-xlarge"
+                                )
+                            } else {
+                                @helper.inputText(
+                                    loginForm.get("username"),
+                                    'class -> "input-xlarge",
+                                    'placeholder -> "Email address"
+                                )
+                            }
+
+                            @helper.inputPassword(
+                                loginForm.get("password"),
+                                'class -> "input-xlarge",
+                                'placeholder -> "Password"
+                            )
+
+                            <div class="form-actions">
+                                <button type="submit" class="btn login btn-primary">Login</button>
+                            </div>
+                        </fieldset>
+                    </form>
+                    <a class="btn forget" href="@securesocial.core.providers.utils.RoutesHelper.startResetPassword()">Forgot?</a>
+                    <a class="btn create" href="@securesocial.core.providers.utils.RoutesHelper.startSignUp()">Signup</a>
+                </div>
+            </div>
+            }
+}.getOrElse {
+    @*****************************************
+     * Todo: throw a runtime exception? this might need improvement
+     *****************************************@
+    @Logger.error("[securesocial] unknown provider '%s'. Can't render it.".format(providerId))
+    { throw new RuntimeException("Unknown provider '%s') }
+}

@@ -1,0 +1,61 @@
+@(user: models.UserIdentity)
+
+@page_header("documentation / visualisation"){
+	<!--link rel="stylesheet/less" href="assets/stylesheets/bootstrap.less" type="text/css" /-->
+	<!--link rel="stylesheet/less" href="assets/stylesheets/responsive.less" type="text/css" /-->
+	<!--script src="assets/javascripts/less-1.3.3.min.js"></script-->
+	<!--append ‘#!watch’ to the browser URL, then refresh the page. -->
+	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
+	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap-responsive.min.css")" rel="stylesheet">
+	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap-glyphicons.css")" rel="stylesheet">
+	<link href="@controllers.routes.Assets.at("stylesheets/index.css")" rel="stylesheet">
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+				<script src="assets/javascript/html5shiv.js"></script>
+			<![endif]-->
+	<!-- Fav and touch icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="@controllers.routes.Assets.at("images/apple-touch-icon-144-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="@controllers.routes.Assets.at("images/apple-touch-icon-114-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="@controllers.routes.Assets.at("images/apple-touch-icon-72-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" href="@controllers.routes.Assets.at("images/apple-touch-icon-57-precomposed.png")">
+	<link rel="shortcut icon" href="@controllers.routes.Assets.at("images/favicon.png")">
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery-pack.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.min.js")"></script>
+
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+}
+	<body class="light">
+		@navbar_fixed_top(user = user,"Documentation"){@if(1==1){}}{
+			<li><a href="@controllers.routes.Documentation.visualisation()" id="link_visualisationDocumentation">Visualisation</a></li>
+			<li><a href="@controllers.routes.Documentation.template()" id="link_templateDocumentation">Template</a></li>
+		}
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="span3">
+					<div class="bs-sidebar hidden-print affix" role="complementary">
+			            <ul class="nav bs-sidenav">
+			                <li>
+			                	<a href="#doc-menu">Menu</a>
+								<ul class="nav">
+							    	<li><a href="#doc-menu-name">Name</a></li>
+							    	<li><a href="#doc-menu-description">Description</a></li>
+							    	<li><a href="#doc-menu-description">The rest...</a></li>
+							  	</ul>
+			                </li>
+							<li><a href="#transitions">Visualisation</a></li>
+							<li>
+							  <a href="#modals">Data</a>
+							  <ul class="nav">
+							    <li><a href="#modals-examples">CSV</a></li>
+							  </ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="span9">
+					<div class="header-spacer"></div>
+				</div>
+			</div>
+		</div>
+	</body>
+@page_footer()

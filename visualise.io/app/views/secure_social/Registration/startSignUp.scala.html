@@ -1,0 +1,34 @@
+@(request: play.api.mvc.RequestHeader, startForm:play.api.data.Form[String])
+@import helper._
+@import securesocial.core.IdentityProvider
+@implicitFieldConstructor = @{ FieldConstructor(securesocial.views.html.inputFieldConstructor.f) }
+
+@secure_social.main( Messages("securesocial.signup.title") ) {
+    @request.flash.get("error").map { msg =>
+    <div class="alert alert-error">
+        @Messages(msg)
+    </div>
+    }
+    <div class="clearfix signup-wrapper">
+        <div class="clearfix signup">
+            <h1>Signup</h1>
+            <form action="@securesocial.core.providers.utils.RoutesHelper.handleStartSignUp().absoluteURL(IdentityProvider.sslEnabled)(request)"
+                      class="form-horizontal"
+                      autocomplete="off" method="post">
+                    <fieldset>
+                        @helper.inputText(
+                            startForm("email"),
+                            '_label -> Messages("securesocial.signup.email1"),
+                            'class -> "input-xlarge",
+                            'placeholder -> "Email address"
+                        )
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary signup">@Messages("securesocial.signup.createAccount")</button>
+                        </div>
+
+                    </fieldset>
+                </form>
+        </div>
+    </div>
+}

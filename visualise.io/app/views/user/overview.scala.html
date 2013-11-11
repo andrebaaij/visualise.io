@@ -1,0 +1,221 @@
+@(user: UserIdentity, overviewUserId: Integer, objects: List[models.Visualisation])
+
+@page_header(user.fullName + " / overview"){
+		<link href="@controllers.routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
+		<link href="@controllers.routes.Assets.at("stylesheets/index.css")" rel="stylesheet">
+		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+					<script src="assets/javascript/html5shiv.js"></script>
+				<![endif]-->
+
+		<!-- Fav and touch icons -->
+		<link rel="apple-touch-icon-precomposed" sizes="144x144" href="@controllers.routes.Assets.at("images/apple-touch-icon-144-precomposed.png")">
+		<link rel="apple-touch-icon-precomposed" sizes="114x114" href="@controllers.routes.Assets.at("images/apple-touch-icon-114-precomposed.png")">
+		<link rel="apple-touch-icon-precomposed" sizes="72x72" href="@controllers.routes.Assets.at("images/apple-touch-icon-72-precomposed.png")">
+		<link rel="apple-touch-icon-precomposed" href="@controllers.routes.Assets.at("images/apple-touch-icon-57-precomposed.png")">
+		<link rel="shortcut icon" href="@controllers.routes.Assets.at("images/favicon.png")">
+		<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.min.js")"></script>
+		<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+}
+<body class="overview">
+	@navbar_fixed_top(user = user,user.fullName + " / Overview"){@if(1==1){}}{
+		@if(user != null){
+			@if(user.getId == overviewUserId) {
+			<li><a href="#modal_newVisualisation" data-toggle="modal"><span class="glyphicon glyphicon-stats"></span> New visualisation</a></li>
+			<li><a href="#modal_newTemplate" data-toggle="modal"><span class="glyphicon glyphicon-file"></span> New template</a></li>
+			} else {
+			<li><a href="@controllers.routes.User.getOverview(user.getId)" data-toggle="modal">My overview</a></li>
+			}
+		}
+	}
+	<div class="header-spacer minimal"></div>
+	<div class="container-fluid">
+		@if(objects.length > 0) {
+		<div class="row-fluid">
+			<div class="col-lg-12">
+				@for(o <- objects) {
+				<div id="card" class="card col-lg-3">
+					<div class="image">
+						<img src="@o.thumbnail" />
+					</div>
+					<div class="arrow @o.instanceType"></div>
+					<div id="information" class="information @o.instanceType">
+					@if(user != null){
+						@if(user.getId == overviewUserId) {
+						<div id="actions" class="actions">
+							@if(o.instanceType == "visualisation") {
+							<a href="@controllers.routes.Visualisation.edit(o.id)">edit <span class="glyphicon glyphicon-pencil"></span></a>
+							<a id="link_delete_@o.id" href="@controllers.routes.Visualisation.delete(o.id)">delete <span class="glyphicon glyphicon-trash"></span></a>
+							} else {
+							<a href="@controllers.routes.Template.edit(o.id)">edit <span class="glyphicon glyphicon-pencil"></span></a>
+							<a id="link_delete_@o.id" href="@controllers.routes.Template.delete(o.id)">delete <span class="glyphicon glyphicon-trash"></span></a>
+							}
+						}
+						</div>
+					}
+						@if(o.instanceType == "visualisation") {
+							<span class="glyphicon glyphicon-stats" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Visualisation"></span></a>
+						} else {
+							<span class="glyphicon glyphicon-file" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Template"></span>
+						}<strong>@o.name</strong>
+						<p>@o.description</p>
+					</div>
+				</div>
+				}
+				
+			</div>
+		</div>
+		}
+	</div>
+
+	<!-- Modals -->
+	<div id="modal_newVisualisation" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<h1 id="myModalLabel">New visualisation</h1>
+				</div>
+				<form role="form" action="@controllers.routes.Visualisation.create()" method="post" onsubmit="return validateNewVisualisatonForm()" >
+					<div class="modal-body">
+						<div class="alert alert-danger">Please give your visualisation a name and choose a template.</div>
+						<div class="form-group">
+				  			<input id="modal_newVisualisation_input_name" type="text" class="form-control" name="visualisationName" placeholder="Name">
+						</div>
+						<div class="form-group">
+				  			<textarea id="modal_newVisualisation_input_description" type="text" class="form-control" name="visualisationDescription" placeholder="Description"></textarea>
+						</div>
+						<div class="form-group" id="chooseTemplate">
+							<input id="modal_newVisualisation_templateId" type="hidden" name="templateId">
+							<input id="modal_newVisualisation_templatePublicationId" type="hidden" name="templatePublicationId">
+							<h3>Based on template:</h3>
+						@search_templates(user = user)
+				  		</div>
+					</div>
+					<div class="modal-footer">
+						<input type="submit" class="btn btn-primary" value="Create visualisation"> 
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div id="modal_newTemplate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">x</button>
+					<h1 id="myModalLabel">New template</h1>
+				</div>
+				<form role="form" action="@controllers.routes.Template.create()" method="post" onsubmit="return validateNewTemplateForm()">
+					<div class="modal-body">
+						<div class="alert alert-danger">Please give your template a name.</div>
+						<div class="form-group">
+				  			<input id="modal_newTemplate_input_name" type="text" class="form-control" name="templateName" placeholder="Name">
+						</div>
+						<div class="form-group">
+				  			<textarea id="modal_newTemplate_input_description" type="text" class="form-control" name="templateDescription" placeholder="Description"></textarea>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<input type="submit" class="btn btn-primary" value="Create template">
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<script>
+		$('#modal_newVisualisation .alert').hide()
+		$('#modal_newTemplate .alert').hide()
+
+		$(document).ready(function () {
+			$('a')
+			.filter(function() {
+				return this.id.match(/link_delete_[0-9]+/);
+			}).click(function() {
+				$.ajax({
+					type: "DELETE",
+					url: $(this).attr("href"),
+					success: function(data) {},
+					error: function(data) {
+						alert('An error occurred, please refresh your page and try again.');
+					  }
+					
+				});
+				$(this).parent().parent().parent().remove()
+				return false;
+			});
+			
+			$("[data-toggle=tooltip]").tooltip();
+
+			cardHeight = $('.card').width()*0.5
+			$('.card .image').each(function () {
+				$(this).css('height',cardHeight)
+			})
+			$('.card .information').each(function () {
+				$(this).css('height',cardHeight*0.4)
+			})
+
+			$( window ).resize(function() {
+				cardHeight = $('.card').width()*0.5
+				$('.card .image').each(function () {
+					$(this).css('height',cardHeight)
+				})
+
+				$('.card .information').each(function () {
+					$(this).css('height',cardHeight*0.4)
+				})
+			});
+			
+			//$('.card').each(function () {
+			//	$(this).on('mouseenter', function() {
+			//		$(this).find('#information').stop(true, false).animate({height:"100%"},500,function(){})
+			//		$(this).find('#actions').stop(true, false).animate({height:"44px"},0,function(){})
+			//	})
+			//})
+			
+			//$('.card').each(function () {
+			//	$(this).on('mouseleave', function() {
+			//		$(this).find('#information').stop(true, false).animate({height:"25%"},500,function(){})
+			//		$(this).find('#actions').stop(true, false).animate({height:"0%"},0,function(){})
+			//	})
+			//})
+		});
+
+
+		function validateNewVisualisatonForm() {
+			result = true
+			
+			
+			if ($('#modal_newVisualisation_input_name').val() === "") {
+				result = false;
+			}
+			if ($('#modal_newVisualisation_templateId').val() === "") {
+				result = false;
+			}
+
+			if (result === false) {
+				$('#modal_newVisualisation .alert').show()
+			}
+			return result
+		}
+
+		function validateNewTemplateForm() {
+			result = true
+			$('#modal_newTemplate .alert').hide()
+
+			if ($('#modal_newTemplate_input_name').val() === "") {
+				result = false;
+			}
+
+			if (result === false) {
+				$('#modal_newTemplate .alert').show()
+			}
+			return result
+		}
+	</script>
+</body>
+@page_footer()

@@ -1,0 +1,38 @@
+@(title: String)(content: Html)
+
+@import securesocial.core.providers.utils.RoutesHelper
+
+@page_header(title){
+	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
+	<link href="@controllers.routes.Assets.at("stylesheets/index.css")" rel="stylesheet">
+	<!--[if lt IE 9]>
+				<script src="assets/javascript/html5shiv.js"></script>
+			<![endif]-->
+	<!-- Fav and touch icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="@controllers.routes.Assets.at("images/apple-touch-icon-144-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="@controllers.routes.Assets.at("images/apple-touch-icon-114-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="@controllers.routes.Assets.at("images/apple-touch-icon-72-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" href="@controllers.routes.Assets.at("images/apple-touch-icon-57-precomposed.png")">
+	<link rel="shortcut icon" href="@controllers.routes.Assets.at("images/favicon.png")">
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery-pack.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+}
+<body class="dark">
+    @navbar_fixed_top(null,""){@if(1==1){}}{@if(1==0){<never></never>}}
+    <div class="header-spacer"></div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="container">
+					<div class="row">
+						<div class="span12">
+  				          @content
+  				        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+@page_footer()

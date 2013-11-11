@@ -1,0 +1,29 @@
+@()
+<!DOCTYPE html>
+
+<html>
+	<head>
+		<link href="@controllers.routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet" />
+		<link href="http://localhost:9000/assets/stylesheets/index.min.css" rel="stylesheet" />
+		<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.min.js")"></script>
+		<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/d3.v3.min.js")"></script>
+		<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/easyXDM/easyXDM.min.js")"></script>
+		<link rel="stylesheet" media="screen" type="text/css" href="@controllers.routes.Assets.at("stylesheets/colorpicker/colorpicker.css")" />
+		<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/colorpicker/colorpicker.js")"></script>
+		<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/bootstrap-slider.js")"></script>
+		<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/_vis.js")"></script>
+		<script type="text/javascript">
+		    easyXDM.DomHelper.requiresJSON("/json2.js");
+		</script>
+	</head>
+	<body class="sandbox">
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div class="col-lg-3">
+					<div id="menu" class="container-fluid menu"></div>
+				</div>
+				<visualisation class="col-lg-9"></visualisation>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,142 @@
+@(visualisationId: Integer, user: models.UserIdentity, visualisation: models.Visualisation, sandboxURL: String)
+@import helper._
+@import securesocial.core.IdentityProvider
+@implicitFieldConstructor = @{ FieldConstructor(securesocial.views.html.inputFieldConstructor.f) }
+
+@page_header(visualisation.name + " / edit"){
+	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
+	<link href="@controllers.routes.Assets.at("stylesheets/index.css")" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="@controllers.routes.Assets.at("stylesheets/imgareaselect-default.css")" />
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+				<script src="assets/javascript/html5shiv.js"></script>
+			<![endif]-->
+	<!-- Fav and touch icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="@controllers.routes.Assets.at("images/apple-touch-icon-144-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="@controllers.routes.Assets.at("images/apple-touch-icon-114-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="@controllers.routes.Assets.at("images/apple-touch-icon-72-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" href="@controllers.routes.Assets.at("images/apple-touch-icon-57-precomposed.png")">
+	<link rel="shortcut icon" href="@controllers.routes.Assets.at("images/favicon.png")">
+	
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+}
+<body class="light minimal">
+	@navbar_fixed_top(user = user,"Visualisation") {
+		<ul id="tabs" class="nav nav-tabs">
+			<li class="active"><a href="#tab_visualisation" data-toggle="tab">edit</a></li>
+			<li><a href="#tab_data" data-toggle="tab">data</a></li>
+		</ul>
+	}{
+		<li><a href="#" id="link_save">Save</a></li>
+		<li><a href="#" id="link_export">Export</a></li>
+		<li><a href="@controllers.routes.User.getOverview(user.getId())">Close</a></li>
+	}
+	<div class="header-spacer minimal"></div>
+	<div class="container-fluid">
+		<div class="row-fluid">
+			<div class="span12">
+				<div class="bs-docs-example">
+					<div class="tabbable tabs-top">
+						<div class="tab-content">
+							<div class="tab-pane active" id="tab_visualisation">
+							</div>
+							<div class="tab-pane" id="tab_data">
+								<div>
+									<H2>Data</H2>
+									<h4>Paste your data in csv format here:</h4>
+									<textarea class="form-control" id="data" rows="10" class="span10">age,population
+<5,2704659
+5-13,4499890
+14-17,2159981
+18-24,3853788
+25-44,14106543
+45-64,8819342
+≥65,612463</textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="modal_save" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h1 id="myModalLabel">Save your template</h1>
+				</div>
+				<div style="float:left; position:relative; overflow:hidden; width:100%;">
+					<img id="thumbnail_visualisation_save" class="thumbnail" style="position: relative; width:100%;" />
+				</div>
+				<div style="clear:both;"></div>
+				<canvas id="canvas"></canvas>
+				<div class="modal-footer">
+					<a href="#" id="modal_save_link_save" data-dismiss="modal" aria-hidden="true" class="btn btn-primary" >Save</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="modal_export" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+					<h1 id="myModalLabel">Export your visualisation</h1>
+				</div>
+				<div class="modal-footer">
+					<a href="#" id="modal_export_link_svg" data-dismiss="modal" aria-hidden="true" class="btn btn-primary half" ><span class="glyphicon glyphicon-circle-arrow-down button-icon"></span>SVG</a>
+					<a href="#" id="modal_export_link_png" data-dismiss="modal" aria-hidden="true" class="btn btn-primary half" ><span class="glyphicon glyphicon-circle-arrow-down button-icon"></span>PNG</a>
+					<h2>Embed:</h2>
+					<textarea id="modal_export_embed_html" style="min-height: 500px; font-size: 12px;"></textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+	@modal_login(user)
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/_vis.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/json2.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/d3.v3.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/easyXDM/easyXDM.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/svgfix-0.2.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/canvg.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.imgareaselect.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/pixastic.custom.js")"></script>
+	<script>
+		$(document).ready(function () {
+			// Initialise socket
+			socket = new easyXDM.Socket({
+			    remote: "@sandboxURL/visualisation/edit", // the path to the provider
+			    onMessage:function(message, origin) {
+			    	message = JSON.parse(message)
+					if (typeof message.source !== 'undefined' && typeof message.source.callback !== 'undefined') {
+						_vis.common.getFunctionFromString(message.source.callback)(message.body)
+					}
+					else if (message.action === "update"){
+						if (message.resource === 'setting') {	
+							_vis.common.updateSettings(message.body)
+						}
+					}
+			    },
+				container:"tab_visualisation"
+			});
+			
+			_vis.visualisation.id = @visualisation.getId()
+			_vis.template.id = @visualisation.getTemplate().getApplication_id()
+			_vis.template.load(@Html(visualisation.getTemplate().getDecodedDefinition()))
+			_vis.visualisation.load('@visualisation.getName()', '@visualisation.getDescription()', @Html(visualisation.getDecodedDefinition()))
+			_vis.visualisation.UI.initialise()
+		});
+
+		function closeEditorWarning(){
+			if (_vis.common.settings.objectHasChanges === true) {
+				return 'If you leave this page, any unsaved changes to your template will be lost.'
+			}
+		}
+
+		window.onbeforeunload = closeEditorWarning
+	</script>
+</body>
+@page_footer()

@@ -1,0 +1,97 @@
+@(user: UserIdentity)
+
+@page_header("Interactive visualisations, the easy way"){
+	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
+	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+	<!--[if lt IE 9]>
+		<script src="assets/javascript/html5shiv.js"></script>
+	<![endif]-->
+
+	<!-- Fav and touch icons -->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="@controllers.routes.Assets.at("images/apple-touch-icon-144-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="@controllers.routes.Assets.at("images/apple-touch-icon-114-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="@controllers.routes.Assets.at("images/apple-touch-icon-72-precomposed.png")">
+	<link rel="apple-touch-icon-precomposed" href="@controllers.routes.Assets.at("images/apple-touch-icon-57-precomposed.png")">
+	<link rel="shortcut icon" href="@controllers.routes.Assets.at("images/favicon.png")">
+
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/scripts.js")"></script>
+	<link href="@controllers.routes.Assets.at("stylesheets/index.css")" rel="stylesheet">
+	<style type="text/css">
+		@@font-face {
+			font-family: 'Roboto Slab';
+			font-style: normal;
+			font-weight: 400;
+			src: local('Roboto Slab Regular'), local('RobotoSlab-Regular'), url(@controllers.routes.Assets.at("fonts/RobotoSlab-Regular.ttf")) format('woff');
+		}
+	</style>
+}
+<body class="light">
+	@navbar_fixed_top(user = user,""){@if(1==1){}}{@if(1==1){}}
+
+	<div class="container-fluid">
+		<div class="row-fluid header">
+			<div class="col-lg-12">
+				<div class="container">
+					<div class="row">
+						<div class="header-spacer"></div>
+						<div class="info col-lg-12">
+							<h1>Interactive visualisations, the easy way</h1>
+							<p>Create and publish visualisations based on beautiful templates.</p>
+							<img src="assets/images/video-screen.png">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row-fluid body">
+			<div class="col-lg-12">
+				<div class="container">			
+					<div class="row">
+						<div class="col-lg-4 column">
+							<img src="assets/images/icon-template.png" />
+							<h3>Fast and easy!</h3>
+							<p>
+								One of our core principles is simplicity. Charticle is so easy to use that anyone can create beautiful data visualizations with it. We know this sounds clich&#0233, but if you don't believe us? Prove us wrong!
+							</p>
+						</div>
+						<div class="col-lg-4 column">
+							<img src="assets/images/icon-d3js.png" /><h3>No coding</h3>
+							<p>
+								Should everybody know how to code interactive visualisations? Not in our opinion. We have taken a different approach where we supply you with templates that you can easily customise them with your own data and styling!
+							</p>
+						</div>
+						<div class="col-lg-4 column">
+							<img src="assets/images/icon-interactive.png" /><h3>Interactive</h3></center>
+							<p>
+								Visualize your data with interactive charts. Users will be more engaged and better able to understand your story. Instead of only writing about the crisis, show them!
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="container colored">
+					<div class="row">
+						<div class="media col-lg-12" style="margin:0;">
+							<div class="media-body">
+								<h1 class="media-heading">Examples</h1>
+								<p>
+									At the moment we support publishing to any website via a small piece of html/javascript code. All you have to do is copy paste.
+								</p>
+								<p>
+								Our backend uses D3.js, this is a JavaScript library for manipulating documents based on data. It using HTML, SVG and CSS. D3&#96;s emphasis on web standards gives us the full capabilities of modern browsers.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="container">
+					<div class="row interested">
+						<H2>Are you done reading? What are you waiting for, start <a type="submit" href="@securesocial.controllers.routes.LoginPage.login">now</a>!</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+@page_footer()

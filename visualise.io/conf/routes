@@ -1,0 +1,59 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# Home page
+GET     /															controllers.Application.index()
+
+GET		/users/:userId/overview										controllers.User.getOverview(userId : Integer)
+
+POST	/visualisations												controllers.Visualisation.create()
+GET		/visualisations/:visualisationId/edit						controllers.Visualisation.edit(visualisationId : Integer)
+PUT		/visualisations/:visualisationId							controllers.Visualisation.update(visualisationId : Integer)
+DELETE	/visualisations/:visualisationId							controllers.Visualisation.delete(visualisationId : Integer)
+
+
+GET		/templates													controllers.Templates.query(q: String ?= null, num : Integer ?= null, start : Integer ?= null, sort: String ?= null, sortby: String ?= null)
+POST	/templates													controllers.Template.create()
+GET		/templates/:templateId/edit									controllers.Template.edit(templateId : Integer)
+PUT		/templates/:templateId										controllers.Template.update(templateId : Integer)
+DELETE	/templates/:templateId										controllers.Template.delete(templateId : Integer)
+
+POST	/templates/:templateId/publish								controllers.Template.publish(templateId : Integer)
+
+GET		/documentation												controllers.Documentation.index()
+GET		/documentation/visualisation								controllers.Documentation.visualisation()
+GET		/documentation/template										controllers.Documentation.template()
+
+POST	/files/download												controllers.Files.download()
+
+# Login page
+GET		/login														securesocial.controllers.LoginPage.login
+GET		/logout														securesocial.controllers.LoginPage.logout
+
+# User Registration and password handling 
+GET		/signup														securesocial.controllers.Registration.startSignUp
+POST    /signup														securesocial.controllers.Registration.handleStartSignUp
+GET     /signup/:token												securesocial.controllers.Registration.signUp(token)
+POST    /signup/:token												securesocial.controllers.Registration.handleSignUp(token)
+GET     /reset														securesocial.controllers.Registration.startResetPassword
+POST    /reset														securesocial.controllers.Registration.handleStartResetPassword
+GET     /reset/:token												securesocial.controllers.Registration.resetPassword(token)
+POST    /reset/:token												securesocial.controllers.Registration.handleResetPassword(token)
+GET     /password													securesocial.controllers.PasswordChange.page
+POST    /password													securesocial.controllers.PasswordChange.handlePasswordChange
+
+# Providers entry points
+GET     /authenticate/:provider     securesocial.controllers.ProviderController.authenticate(provider)
+POST    /authenticate/:provider     securesocial.controllers.ProviderController.authenticateByPost(provider)
+GET     /not-authorized             securesocial.controllers.ProviderController.notAuthorized
+
+
+
+
+# GET     /message                    controllers.MessageController.getMessage()
+# GET     /assets/javascripts/routes  controllers.MessageController.javascriptRoutes()
+
+# Map static resources from the /public folder to the /assets URL path
+GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET     /webjars/*file              controllers.WebJarAssets.at(file)

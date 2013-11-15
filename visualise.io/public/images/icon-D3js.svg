@@ -57,15 +57,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="4.5012974"
-     inkscape:cx="35.818976"
+     inkscape:cx="1.1623012"
      inkscape:cy="84.241161"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
      inkscape:window-width="1920"
      inkscape:window-height="1018"
-     inkscape:window-x="1272"
-     inkscape:window-y="-8"
+     inkscape:window-x="-30720"
+     inkscape:window-y="-32000"
      inkscape:window-maximized="1" />
   <metadata
      id="metadata7155">
@@ -86,7 +86,7 @@
      transform="translate(-31.262221,-296.42192)">
     <path
        sodipodi:type="arc"
-       style="fill:#47c27b;fill-opacity:1;stroke:none"
+       style="fill:#47c27b;fill-opacity:0.81481481;stroke:none"
        id="path5275-1"
        sodipodi:cx="194.2265"
        sodipodi:cy="359.7789"
@@ -125,7 +125,7 @@
          style="opacity:0.37938052999999999;fill:#fdfdfd;fill-opacity:1;stroke:#fdfdfd;stroke-width:2.77157211000000010;stroke-opacity:1">D3</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:15.12329292000000100px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#fdfdfd;fill-opacity:1;stroke:#e9e5e5;stroke-width:0.10756982000000000;stroke-opacity:1;font-family:coolvetica;-inkscape-font-specification:coolvetica"
+       style="font-size:15.12329292000000100px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;fill:#fdfdfd;fill-opacity:1;stroke:#ffffff;stroke-width:0.10756982000000000;stroke-opacity:1;font-family:coolvetica;-inkscape-font-specification:coolvetica"
        x="152.43031"
        y="397.30463"
        id="text6073-9"
@@ -137,6 +137,6 @@
          id="tspan6075-4"
          x="152.43031"
          y="397.30463"
-         style="opacity:0.37938052999999999;fill:#fdfdfd;fill-opacity:1;stroke:#e9e5e5;stroke-width:0.61438375999999995;stroke-opacity:1">js</tspan></text>
+         style="opacity:0.37938052999999999;fill:#fdfdfd;fill-opacity:1;stroke:#ffffff;stroke-width:0.61438375999999995;stroke-opacity:1">js</tspan></text>
   </g>
 </svg>

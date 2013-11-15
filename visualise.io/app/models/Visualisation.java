@@ -9,7 +9,7 @@ import java.util.Iterator;
 import commons.database.DatabaseConnection;
 import play.db.*;
 
-public class Visualisation {
+public class Visualisation extends Entity{
 	public Integer id;
 	
 	public String name,
@@ -23,15 +23,14 @@ public class Visualisation {
 	public Template template;
 	
 	public Visualisation(String name, String description, int templateId) {
-		setName(name);
-		setDescription(description);
-		setTemplate(new Template(templateId));
-	}
-	
-	public Visualisation(int id) {
-		setId(id);
+		this.name = name;
+		this.description = description;
+		this.template = new Template(templateId);
 	}
 
+	public Visualisation(Integer id) {
+		super(id);
+	}
 	public Boolean isAuthorized(Integer userId) {
 
 		try {
@@ -41,7 +40,7 @@ public class Visualisation {
 			resultSet = db.executeQuery(
 					DatabaseConnection.SELECT,
 			      "select fnIsUserAuthorizedForVisualisation(?,?)",
-			      userId, getId());
+			      userId, this.id);
 			if (resultSet.size() > 1) {
 				return (Boolean) resultSet.get(1).get(0);
 			}
@@ -65,7 +64,7 @@ public class Visualisation {
 			resultSet = db.executeQuery(
 					DatabaseConnection.SELECT,
 			      "select spIsReportPublic(?)",
-			      getId());
+			      this.id);
 			if (resultSet.size() > 1) {
 				return (Boolean) resultSet.get(1).get(0);
 			}
@@ -78,48 +77,6 @@ public class Visualisation {
 		}
    }
 	
-	/**
-    * @return the id
-    */
-   public Integer getId() {
-   	return id;
-   }
-
-	/**
-    * @param id the id to set
-    */
-   public void setId(Integer id) {
-   	this.id = id;
-   }
-
-	/**
-    * @return the name
-    */
-   public String getName() {
-   	return name;
-   }
-
-	/**
-    * @param name the name to set
-    */
-   public void setName(String name) {
-   	this.name = name;
-   }
-
-	/**
-    * @return the description
-    */
-   public String getDescription() {
-   	return description;
-   }
-
-	/**
-    * @param description the description to set
-    */
-   public void setDescription(String description) {
-   	this.description = description;
-   }
-
 	/**
     * @return the jSONString
     */
@@ -146,77 +103,8 @@ public class Visualisation {
 	      e.printStackTrace();
       }
    }
-	/**
-    * @return the type
-    */
-   public String getType() {
-   	return type;
-   }
 
-	/**
-    * @param type the type to set
-    */
-   public void setType(String type) {
-   	this.type = type;
-   }
-
-	/**
-    * @return the jSONString
-    */
-   public String getDefinition() {
-      return definition;
-   }
-
-	/**
-    * @param jSONString the jSONString to set
-    */
-   public void setDefinition(String definition) {
-   	this.definition = definition;
-   }
-
-	/**
-    * @return the data
-    */
-   public String getData() {
-   	return data;
-   }
-
-	/**
-    * @param data the data to set
-    */
-   public void setData(String Data) {
-   	this.data = Data;
-   }
-
-	/**
-    * @return the template
-    */
-   public Template getTemplate() {
-   	return template;
-   }
-
-	/**
-    * @param template the template to set
-    */
-   public void setTemplate(Template template) {
-   	this.template = template;
-   }
-
-	/**
-    * @return the image
-    */
-   public String getThumbnail() {
-   	return thumbnail;
-   }
-
-	/**
-    * @param image the image to set
-    */
-   public void setThumbnail(String thumbnail) {
-   	this.thumbnail = thumbnail;
-   }
-
-	public boolean dbSelect(Integer userId) {
+   public boolean dbSelect(Integer userId) {
 		if (isAuthorized(userId)) {
 			
 		   // TODO Auto-generated method stub
@@ -232,7 +120,7 @@ public class Visualisation {
 				            "   inner join visualisation_template vt on (vt.visualisation_id = v.id)" +
 				            "   inner join `template` t on (t.id= vt.template_id)" +
 				            "where `v`.`id` = ?;",
-				            getId());
+				            this.id);
 				
 				if (resultSet.size() > 1) {
 					int j = 1;
@@ -240,15 +128,15 @@ public class Visualisation {
 					i.next(); // remove headers from resultset
 					
 					ArrayList<Object> r = i.next();
-					setName((String) r.get(0));
-					setDescription((String) r.get(1));
-					setDefinition((String) r.get(2));
-					setData((String) r.get(3));
+					this.name = (String) r.get(0);
+					this.description = (String) r.get(1);
+					this.definition = (String) r.get(2);
+					this.data = (String) r.get(3);
 					
-					setTemplate( new models.Template((Integer) r.get(4)));
-					getTemplate().setName((String) r.get(5));
-					getTemplate().setDescription((String) r.get(6));
-					getTemplate().setDefinition((String) r.get(7));
+					this.template = new models.Template((Integer) r.get(4));
+					this.template.name = (String) r.get(5);
+					this.template.description = (String) r.get(6);
+					this.template.definition = (String) r.get(7);
 					
 					return true;
 				}
@@ -278,7 +166,7 @@ public class Visualisation {
 				            "   `data` = ?," +
 				            "   `thumbnail` = ? " +
 				            "where `id` = ?;",
-				            getName(), getDescription(), getDefinition(), getData(),getThumbnail(), getId());
+				            this.name, this.description,this.definition, this.data, this.thumbnail, this.id);
 				
 				return true;
 			} catch (Exception e) {
@@ -296,33 +184,33 @@ public class Visualisation {
 	   // TODO Auto-generated method stub
 		DatabaseConnection db;
 		try {
-			if(getTemplate().isPublished(userId)) {
-				getTemplate().dbSelect(userId);
+			if(this.template.isPublished(userId)) {
+				this.template.dbSelect(userId);
 				
 				db = new DatabaseConnection(DB.getDataSource("charticle"));
 				db.executeQuery(
 						DatabaseConnection.INSERT,
 				            "insert into `visualisation` (`name`, `description`, `thumbnail`)" +
-				            "select ?,?,?;", getName(), getDescription(), getTemplate().getThumbnail());
-				setId(db.getGeneratedKey());
-				setDefinition("{\"id\":\"" + getId().toString() + "\"}");
+				            "select ?,?,?;", this.name, this.description, this.template.thumbnail);
+				this.id = db.getGeneratedKey();
+				this.definition = "{\"id\":\"" + this.id.toString() + "\"}";
 				
 				db.executeQuery(
 						DatabaseConnection.INSERT,
 		            "insert into `user_hasAuthorisation_visualisation` (`user_id`, `visualisation_id`, `authorisationRole_id`)" +
-		            "select ?, ?, 1;", userId, getId());
+		            "select ?, ?, 1;", userId, this.id);
 	
 				db.executeQuery(
 						DatabaseConnection.INSERT,
 		            "insert into `visualisation_template` (`visualisation_id`, `template_id`)" +
-		            "select ?, ?", getId(), templateId);
+		            "select ?, ?", this.id, templateId);
 				
 				db.executeQuery(
 						DatabaseConnection.UPDATE,
 		            "update `visualisation` " +
 		            "set `JSON` = ?" +
-		            "where id = ?;", getDefinition(), getId());
-				setId(db.getGeneratedKey());
+		            "where id = ?;",this.definition, this.id);
+				this.id = db.getGeneratedKey();
 				return true;
 			}
 			else {
@@ -342,7 +230,7 @@ public class Visualisation {
 			db.executeQuery(
 					DatabaseConnection.DELETE,
 	            "delete from `user_hasAuthorisation_visualisation` " +
-	            "where `visualisation_id` = ?;", getId());
+	            "where `visualisation_id` = ?;", this.id);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -362,8 +250,8 @@ public class Visualisation {
 			            " from `visualisation` `v`" +
 			            "    inner join `visualisation_publication` `vp` on (`vp`.`visualisation_id` = `v`.`id`)" +
 			            "    inner join `publication` `p` on (`p`.`id` = `vp`.`publication_id` and `p`.`type` = 'public')" +
-			            " where `v`.`id` = ?;", getId());
-			setId(db.getGeneratedKey());
+			            " where `v`.`id` = ?;", this.id);
+			this.id = db.getGeneratedKey();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

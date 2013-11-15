@@ -123,10 +123,10 @@
 				container:"tab_visualisation"
 			});
 			
-			_vis.visualisation.id = @visualisation.getId()
-			_vis.template.id = @visualisation.getTemplate().getApplication_id()
-			_vis.template.load(@Html(visualisation.getTemplate().getDecodedDefinition()))
-			_vis.visualisation.load('@visualisation.getName()', '@visualisation.getDescription()', @Html(visualisation.getDecodedDefinition()))
+			_vis.visualisation.id = @visualisation.id
+			_vis.template.id = @visualisation.template.applicationId
+			_vis.template.load(@Html(visualisation.template.getDecodedDefinition()))
+			_vis.visualisation.load('@visualisation.name', '@visualisation.description', @Html(visualisation.getDecodedDefinition()))
 			_vis.visualisation.UI.initialise()
 		});
 

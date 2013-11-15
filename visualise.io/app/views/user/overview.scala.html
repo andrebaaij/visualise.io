@@ -1,4 +1,4 @@
-@(user: UserIdentity, overviewUserId: Integer, objects: List[models.Visualisation])
+@(user: UserIdentity, overviewUserId: Integer, entities: List[models.Entity])
 
 @page_header(user.fullName + " / overview"){
 		<link href="@controllers.routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
@@ -30,35 +30,32 @@
 	}
 	<div class="header-spacer minimal"></div>
 	<div class="container-fluid">
-		@if(objects.length > 0) {
+		@if(entities.length > 0) {
 		<div class="row-fluid">
 			<div class="col-lg-12">
-				@for(o <- objects) {
+				@for(ent <- entities) {
 				<div id="card" class="card col-lg-3">
 					<div class="image">
-						<img src="@o.thumbnail" />
+						<img src="@ent.thumbnail" />
 					</div>
-					<div class="arrow @o.instanceType"></div>
-					<div id="information" class="information @o.instanceType">
-					@if(user != null){
-						@if(user.getId == overviewUserId) {
+					<div class="arrow type"></div>
+					<div id="information" class="information @ent.instance">
 						<div id="actions" class="actions">
-							@if(o.instanceType == "visualisation") {
-							<a href="@controllers.routes.Visualisation.edit(o.id)">edit <span class="glyphicon glyphicon-pencil"></span></a>
-							<a id="link_delete_@o.id" href="@controllers.routes.Visualisation.delete(o.id)">delete <span class="glyphicon glyphicon-trash"></span></a>
+							@if(ent.instance == "visualisation") {
+							<a href="@controllers.routes.Visualisation.edit(ent.id)">edit <span class="glyphicon glyphicon-pencil"></span></a>
+							<a id="link_delete_@ent.id" href="@controllers.routes.Visualisation.delete(ent.id)">delete <span class="glyphicon glyphicon-trash"></span></a>
 							} else {
-							<a href="@controllers.routes.Template.edit(o.id)">edit <span class="glyphicon glyphicon-pencil"></span></a>
-							<a id="link_delete_@o.id" href="@controllers.routes.Template.delete(o.id)">delete <span class="glyphicon glyphicon-trash"></span></a>
+							<a href="@controllers.routes.Template.edit(ent.id)">edit <span class="glyphicon glyphicon-pencil"></span></a>
+							<a id="link_delete_@ent.id" href="@controllers.routes.Template.delete(ent.id)">delete <span class="glyphicon glyphicon-trash"></span></a>
 							}
-						}
 						</div>
-					}
-						@if(o.instanceType == "visualisation") {
+						@if(ent.instance == "visualisation") {
 							<span class="glyphicon glyphicon-stats" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Visualisation"></span></a>
 						} else {
 							<span class="glyphicon glyphicon-file" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Template"></span>
-						}<strong>@o.name</strong>
-						<p>@o.description</p>
+						}
+						<strong>@ent.name</strong>
+						<p>@ent.description</p>
 					</div>
 				</div>
 				}

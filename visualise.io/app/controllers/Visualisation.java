@@ -24,7 +24,7 @@ public class Visualisation extends Controller {
 
         boolean result = visualisation.dbInsert(user.getId(), Integer.parseInt(requestData.get("templatePublicationId")));
 
-        if(result) return redirect(controllers.routes.Visualisation.edit(visualisation.getId()));
+        if(result) return redirect(controllers.routes.Visualisation.edit(visualisation.id));
         else return internalServerError();
     }
 
@@ -59,9 +59,9 @@ public class Visualisation extends Controller {
 
         models.Visualisation visualisation = new models.Visualisation(visualisationId);
 
-        visualisation.setName(json.findPath("name").textValue());
-        visualisation.setDescription(json.findPath("description").textValue());
-        visualisation.setThumbnail(json.findPath("thumbnail").textValue());
+        visualisation.name = json.findPath("name").textValue();
+        visualisation.description = json.findPath("description").textValue();
+        visualisation.thumbnail = json.findPath("thumbnail").textValue();
         visualisation.setEncodedDefinition(json.findPath("definition").toString());
 
         boolean result = visualisation.dbUpdate(user.getId());

@@ -39,7 +39,7 @@
 						<div class="info col-lg-12">
 							<h1>Interactive visualisations, the easy way</h1>
 							<p>Create and publish visualisations based on beautiful templates.</p>
-							<img src="assets/images/video-screen.png">
+							<img src="@controllers.routes.Assets.at("images/video-screen.png")">
 						</div>
 					</div>
 				</div>
@@ -50,22 +50,24 @@
 				<div class="container">			
 					<div class="row">
 						<div class="col-lg-4 column">
-							<img src="assets/images/icon-template.png" />
-							<h3>Fast and easy!</h3>
+							<img src="@controllers.routes.Assets.at("images/icon-template.png")" />
+							<h3>Templates!</h3>
 							<p>
-								One of our core principles is simplicity. Charticle is so easy to use that anyone can create beautiful data visualizations with it. We know this sounds clich&#0233, but if you don't believe us? Prove us wrong!
+								Should everybody know how to code interactive visualisations? Not in our opinion. We have taken a different approach where we supply you with templates that you can easily customise with your own data and styling! Is there no template suited for your needs? Just create your own!
 							</p>
 						</div>
 						<div class="col-lg-4 column">
-							<img src="assets/images/icon-d3js.png" /><h3>No coding</h3>
+							<img src="@controllers.routes.Assets.at("images/icon-d3js.png")" />
+							<h3>Backend</h3>
 							<p>
-								Should everybody know how to code interactive visualisations? Not in our opinion. We have taken a different approach where we supply you with templates that you can easily customise them with your own data and styling!
-							</p>
+								Our backend uses D3.js, this is a JavaScript library for manipulating documents based on data. It gives us the full capabilities of modern browsers. Don't worry, you won't need to write anything while creating visualisations.
+							<p>
 						</div>
 						<div class="col-lg-4 column">
-							<img src="assets/images/icon-interactive.png" /><h3>Interactive</h3></center>
+							<img src="@controllers.routes.Assets.at("images/icon-interactive.png")" />
+							<h3>Interactive</h3>
 							<p>
-								Visualize your data with interactive charts. Users will be more engaged and better able to understand your story. Instead of only writing about the crisis, show them!
+								A lot of the templates are optimized for onscreen interactions. This means awesome visualisations! Take a look at the examples, or go and create your own.
 							</p>
 						</div>
 					</div>
@@ -75,19 +77,14 @@
 						<div class="media col-lg-12" style="margin:0;">
 							<div class="media-body">
 								<h1 class="media-heading">Examples</h1>
-								<p>
-									At the moment we support publishing to any website via a small piece of html/javascript code. All you have to do is copy paste.
-								</p>
-								<p>
-								Our backend uses D3.js, this is a JavaScript library for manipulating documents based on data. It using HTML, SVG and CSS. D3&#96;s emphasis on web standards gives us the full capabilities of modern browsers.
-								</p>
+
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="container">
 					<div class="row interested">
-						<H2>Are you done reading? What are you waiting for, start <a type="submit" href="@securesocial.controllers.routes.LoginPage.login">now</a>!</h2>
+						<H2>Are you done reading? What are you waiting for, signup <a type="submit" href="@securesocial.controllers.routes.LoginPage.login">now</a>!</h2>
 					</div>
 				</div>
 			</div>

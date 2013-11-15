@@ -26,7 +26,7 @@ public class Template extends Controller{
    				requestData.get("templateDescription"));
    	boolean result = template.dbInsert(user.getId());
    	
-   	if(result) return redirect(controllers.routes.Template.edit(template.getId()));
+   	if(result) return redirect(controllers.routes.Template.edit(template.id));
    	else return internalServerError();
 	}
 	
@@ -47,11 +47,11 @@ public class Template extends Controller{
 
 		models.Template template = new models.Template(templateId);
 	   	boolean result = template.dbSelect(user.getId());
-	   	template.setName(json.findPath("name").textValue());
-	   	template.setDescription(json.findPath("description").textValue());
+	   	template.name = json.findPath("name").textValue();
+	   	template.description = json.findPath("description").textValue();
 	   	template.setEncodedDefinition(json.findPath("definition").toString());
-	   	template.setThumbnail(json.findPath("thumbnail").textValue());
-	   	template.setTags(json.findPath("tags").textValue());
+	   	template.thumbnail = json.findPath("thumbnail").textValue();
+	   	template.tags = json.findPath("tags").textValue();
 	   	if(result) {
 	   		result = template.dbUpdate(user.getId());
 	   		if(result) return ok();
@@ -68,11 +68,11 @@ public class Template extends Controller{
 
 	   	models.Template template = new models.Template(templateId);
 	   	boolean result = template.dbSelect(user.getId());
-	   	template.setName(json.findPath("name").textValue());
-	   	template.setDescription(json.findPath("description").textValue());
+	   	template.name = json.findPath("name").textValue();
+	   	template.description = json.findPath("description").textValue();
 	   	template.setEncodedDefinition(json.findPath("definition").toString());
-	   	template.setThumbnail(json.findPath("thumbnail").textValue());
-	   	template.setTags(json.findPath("tags").textValue());
+	   	template.thumbnail = json.findPath("thumbnail").textValue();
+	   	template.tags = json.findPath("tags").textValue();
 	   	if(result) result = template.dbUpdate(user.getId());
 	   	if(result) result = template.dbPublish(user.getId(), publicationTypeId);
 	   	if(result) return ok();

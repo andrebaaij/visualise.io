@@ -1,6 +1,6 @@
 @(user: models.UserIdentity, template: models.Template, sandboxURL: String)
 
-@page_header(template.getName + " / edit"){
+@page_header(template.name + " / edit"){
 	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
 	<link href="@controllers.routes.Assets.at("stylesheets/index.min.css")" rel="stylesheet">
 <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -61,7 +61,7 @@
 														<div id="inputType">
 															<div id="label" class="col-lg-2 control-label" for="input_value">Name</div>
 															<div id="input" class="input-group col-lg-10">
-																<input type="text" class="form-control" id="input_name" value="@template.getName()">
+																<input type="text" class="form-control" id="input_name" value="@template.name">
 															</div>
 														</div>
 													</div>
@@ -69,7 +69,7 @@
 														<div id="inputType">
 															<div id="label" class="col-lg-2 control-label" for="input_description">Desc</div>
 															<div id="input" class="col-lg-10 input-group">
-																<textarea type="text" class="form-control" id="input_description">@template.getDescription()</textarea>
+																<textarea type="text" class="form-control" id="input_description">@template.description</textarea>
 															</div>
 														</div>
 													</div>
@@ -104,7 +104,7 @@ _vis.visualisation.draw(function(DOM, parameters, datasets) {
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Ã—</button>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 					<h1 id="myModalLabel">Publish your template</h1>
 				</div>
 				<div class="modal-body">
@@ -112,7 +112,7 @@ _vis.visualisation.draw(function(DOM, parameters, datasets) {
 						<div id="inputType">
 							<div id="label" class="col-lg-2 control-label" for="input_tags">Tags</div>
 							<div id="input" class="col-lg-10 input-group">
-								<input type="text" class="form-control" id="input_tags" value="@template.getTags()" placeholder="Comma seperated tag list, so people can find your template!"/>
+								<input type="text" class="form-control" id="input_tags" value="@template.tags" placeholder="Comma seperated tag list, so people can find your template!"/>
 							</div>
 						</div>
 					</div>
@@ -132,7 +132,7 @@ _vis.visualisation.draw(function(DOM, parameters, datasets) {
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Ã—</button>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 					<h1 id="myModalLabel">Save your template</h1>
 				</div>
 				<div style="float:left; position:relative; overflow:hidden; width:100%;">
@@ -150,7 +150,7 @@ _vis.visualisation.draw(function(DOM, parameters, datasets) {
 		<div class="modal-dialog">
 			<div class="modal-content">
 				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">Ã—</button>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 					<h1 id="myModalLabel">Export your visualisation</h1>
 				</div>
 				<div class="modal-footer">
@@ -195,9 +195,9 @@ _vis.visualisation.draw(function(DOM, parameters, datasets) {
 				container:"tab_visualisation"
 			});
 			
-			_vis.template.id = @template.getApplication_id()
-			_vis.template.load(@Html(template.getDecodedDefinition()))
-			_vis.template.UI.initialise()
+			_vis.template.id = @template.applicationId;
+			_vis.template.load(@Html(template.getDecodedDefinition()));
+			_vis.template.UI.initialise();
 		});
 
 			function closeEditorWarning(){

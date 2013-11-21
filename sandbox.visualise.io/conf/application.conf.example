@@ -1,0 +1,21 @@
+# This is the main configuration file for the application.
+# ~~~~~
+
+# Secret key
+# ~~~~~
+# The secret key is used to secure cryptographics functions.
+# If you deploy your application to several instances be sure to use the same key!
+application.secret="HNOd87yf{&DDYHOFAWI4LHAISUDYFOX::AlV=L4:d0[iH_V?;0G6|;56Eg]GDcvL"
+
+# The application languages
+# ~~~~~
+application.langs="en"
+
+# Root logger:
+logger.root=ERROR
+
+# Logger used by the framework:
+logger.play=INFO
+
+# Logger provided to your application:
+logger.application=DEBUG

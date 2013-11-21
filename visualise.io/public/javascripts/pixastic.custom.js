@@ -1,4 +1,4 @@
-/*
+/*!
  * Pixastic - JavaScript Image Processing Library
  * Copyright (c) 2008 Jacob Seidelin, jseidelin@nihilogic.dk, http://blog.nihilogic.dk/
  * MIT License [http://www.pixastic.com/lib/license.txt]

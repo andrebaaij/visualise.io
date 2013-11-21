@@ -1,4 +1,4 @@
-/*
+/*!
  * jQuery inlineEdit
  *
  * Copyright (c) 2009 Ca-Phun Ung <caphun at yelotofu dot com>

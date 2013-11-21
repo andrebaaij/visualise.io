@@ -1,4 +1,4 @@
-/*
+/*!
  * svgfix.js - Javascript SVG parser and renderer on Canvas
  * version: 0.2
  * MIT Licensed

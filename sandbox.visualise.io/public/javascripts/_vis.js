@@ -96,7 +96,7 @@ _vis.common.isNumber = function isNumber(n) {
 }
 
 _vis.common.escape = function escape(value) {
-	/*
+	/*!
 	The function _vis.common.escape is under the following copyright:
 
 	<copyright>

@@ -5,8 +5,8 @@
 
 @page_header(visualisation.name + " / edit"){
 	<link href="@controllers.routes.Assets.at("stylesheets/bootstrap.min.css")" rel="stylesheet">
-	<link href="@controllers.routes.Assets.at("stylesheets/index.css")" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="@controllers.routes.Assets.at("stylesheets/imgareaselect-default.css")" />
+	<link href="@controllers.routes.Assets.at("stylesheets/index.min.css")" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="@controllers.routes.Assets.at("stylesheets/imgareaselect-default.min.css")" />
 	<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
 	<!--[if lt IE 9]>
 				<script src="assets/javascript/html5shiv.js"></script>
@@ -96,14 +96,14 @@
 		</div>
 	</div>
 	@modal_login(user)
-	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/_vis.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/_vis.min.js")"></script>
 	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/json2.min.js")"></script>
 	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/d3.v3.min.js")"></script>
-	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/easyXDM/easyXDM.min.js")"></script>
-	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/svgfix-0.2.js")"></script>
-	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/canvg.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/easyXDM.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/svgfix-0.2.min.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/canvg.min.js")"></script>
 	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.imgareaselect.min.js")"></script>
-	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/pixastic.custom.js")"></script>
+	<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/pixastic.custom.min.js")"></script>
 	<script>
 		$(document).ready(function () {
 			// Initialise socket

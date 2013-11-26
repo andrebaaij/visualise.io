@@ -84,26 +84,6 @@ _vis.common.escape = function escape(value) {
         https://github.com/mathiasbynens/jsesc
     </source>
     */
-
-    /*
-    var jsCache = {
-        // http://es5.github.com/#x7.8.4
-        // Table 4 — String Single Character Escape Sequences
-        '\b': '\\b',
-        '\t': '\\t',
-        '\n': '\\n',
-        '\v': '\\x0b', // In IE < 9, '\v' == 'v'
-        '\f': '\\f',
-        '\r': '\\r',
-        // escape double quotes, \u2028, and \u2029 too, as they break input
-        '\"': '\\\"',
-        '\u2028': '\\u2028',
-        '\u2029': '\\u2029',
-        // we’re wrapping the string in single quotes, so escape those too
-        '\'': '\\\'',
-        '\\': '\\\\'
-    };
-    */
     // http://mathiasbynens.be/notes/css-escapes
     function cssEscape(string, escapeNonASCII) {
         // Based on `ucs2decode` from http://mths.be/punycode
@@ -160,25 +140,6 @@ _vis.common.escape = function escape(value) {
             'output': output
         };
     }
-/*
-    function jsEscape(str) {
-        return str.replace(/[\s\S]/g, function (character) {
-            var charCode = character.charCodeAt(),
-                hexadecimal = charCode.toString(16),
-                longhand = hexadecimal.length > 2,
-                escape;
-            if (/[\x20-\x26\x28-\x5b\x5d-\x7e]/.test(character)) {
-                // it’s a printable ASCII character that is not `'` or `\`; don’t escape it
-                return character;
-            }
-            if (jsCache[character]) {
-                return jsCache[character];
-            }
-            escape = jsCache[character] = '\\' + (longhand ? 'u' : 'x') + ('0000' + hexadecimal).slice(longhand ? -4 : -2);
-            return escape;
-        });
-    }
-*/
     return cssEscape(value.replace(/\r\n?/g, '\n'), true).output;
 };
 
@@ -716,69 +677,11 @@ _vis.visualisation.load = function load(name, description, definition) {
     socket.postMessage(JSON.stringify(message));
 };
 
-/*
-    // Obsolete code?
-_vis.visualisation.publish = function publish() {
-    $('#modal_publish').modal('hide')
-    
-    Pixastic.process(document.getElementById("visualisation"), "crop", {
-        rect : {
-            left :_vis.common.settings.thumbnailSelection.x1,
-            top : _vis.common.settings.thumbnailSelection.y1,
-            width : _vis.common.settings.thumbnailSelection.width,
-            height : _vis.common.settings.thumbnailSelection.height
-        }
-    });
-    
-    _vis.visualisation.thumbnail.image = document.getElementById('thumbnail_visualisation_publish').toDataURL("image/png")
-    
-    definition = {}
-    definition.parameters = _vis.visualisation.parameters
-    definition.datasets = {
-        data : _vis.datasets.data.data
-    }
-    definition.settings = _vis.common.settings
-
-    putData = {}
-    putData.name =_vis.template.name
-    putData.description = _vis.template.description
-    putData.definition = definition
-    putData.thumbnail = _vis.visualisation.thumbnail.image
-
-
-    $.ajax({
-        type: "PUT",
-        contentType: "text/json",
-        async: false,
-        url: "/templates/" + _vis.visualisation.id + "/publish",
-        data: JSON.stringify(putData),
-        error: function (data) {
-            bSuccess = false
-        }.done(function ( data, textStatus, jqXHR ) {
-        if (jqXHR.responseText.length > 0) {
-            bSuccess = false
-            error = "session-timeout"
-        }
-    })
-
-    if (bSuccess === true) {
-        alert('Your visualisation has been succesfully published.');
-        _vis.common.settings.objectHasChanges = false;
-        $('#modal_save').modal('hide')
-    }
-    else if (error === "session-timeout"){
-        Pixastic.revert(document.getElementById("thumbnail_visualisation_save"));
-        $('#modal_login').modal({
-          show: true
-        })
-    } else {
-        alert('An error occurred, please try again.');
-    }
-}
-*/
 _vis.visualisation.thumbnail.set = function getThumbnail(body) {
     _vis.visualisation.parameters = body.parameters;
-    _vis.visualisation.DOM = body.DOM;
+    _vis.visualisation.DOM = $('<parent>').append($('<parent>').append(body.DOM).find('svg')).html();
+
+    console.log(_vis.visualisation.DOM);
 
     Pixastic.revert(document.getElementById("thumbnail_visualisation_save"));
     canvg(document.getElementById('canvas'), svgfix(_vis.visualisation.DOM), 

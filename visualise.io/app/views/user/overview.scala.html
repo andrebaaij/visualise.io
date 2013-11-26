@@ -16,6 +16,96 @@
 		<link rel="shortcut icon" href="@controllers.routes.Assets.at("images/favicon.png")">
 		<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/jquery.min.js")"></script>
 		<script type="text/javascript" src="@controllers.routes.Assets.at("javascripts/bootstrap.min.js")"></script>
+		<script>
+			$('#modal_newVisualisation .alert').hide()
+			$('#modal_newTemplate .alert').hide()
+
+			$(document).ready(function () {
+				$('a')
+				.filter(function() {
+					return this.id.match(/link_delete_[0-9]+/);
+				}).click(function() {
+					$.ajax({
+						type: "DELETE",
+						url: $(this).attr("href"),
+						success: function(data) {},
+						error: function(data) {
+							alert('An error occurred, please refresh your page and try again.');
+						  }
+						
+					});
+					$(this).parent().parent().parent().remove()
+					return false;
+				});
+				
+				$("[data-toggle=tooltip]").tooltip();
+
+				cardHeight = $('.card').width()*0.5
+				$('.card .image').each(function () {
+					$(this).css('height',cardHeight)
+				})
+				$('.card .information').each(function () {
+					$(this).css('height',cardHeight*0.4)
+				})
+
+				$( window ).resize(function() {
+					cardHeight = $('.card').width()*0.5
+					$('.card .image').each(function () {
+						$(this).css('height',cardHeight)
+					})
+
+					$('.card .information').each(function () {
+						$(this).css('height',cardHeight*0.4)
+					})
+				});
+				
+				//$('.card').each(function () {
+				//	$(this).on('mouseenter', function() {
+				//		$(this).find('#information').stop(true, false).animate({height:"100%"},500,function(){})
+				//		$(this).find('#actions').stop(true, false).animate({height:"44px"},0,function(){})
+				//	})
+				//})
+				
+				//$('.card').each(function () {
+				//	$(this).on('mouseleave', function() {
+				//		$(this).find('#information').stop(true, false).animate({height:"25%"},500,function(){})
+				//		$(this).find('#actions').stop(true, false).animate({height:"0%"},0,function(){})
+				//	})
+				//})
+			});
+
+
+			function validateNewVisualisatonForm() {
+				result = true
+				
+				
+				if ($('#modal_newVisualisation_input_name').val() === "") {
+					result = false;
+				}
+				if ($('#modal_newVisualisation_templateId').val() === "") {
+					result = false;
+				}
+
+				if (result === false) {
+					$('#modal_newVisualisation .alert').show()
+				}
+				return result
+			}
+
+			function validateNewTemplateForm() {
+				result = true
+				$('#modal_newTemplate .alert').hide()
+
+				if ($('#modal_newTemplate_input_name').val() === "") {
+					result = false;
+				}
+
+				if (result === false) {
+					$('#modal_newTemplate .alert').show()
+				}
+				return result
+			}
+		</script>
 }
 <body class="overview">
 	@navbar_fixed_top(user = user,user.fullName + " / Overview"){@if(1==1){}}{
@@ -123,96 +213,5 @@
 			</div>
 		</div>
 	</div>
-
-	<script>
-		$('#modal_newVisualisation .alert').hide()
-		$('#modal_newTemplate .alert').hide()
-
-		$(document).ready(function () {
-			$('a')
-			.filter(function() {
-				return this.id.match(/link_delete_[0-9]+/);
-			}).click(function() {
-				$.ajax({
-					type: "DELETE",
-					url: $(this).attr("href"),
-					success: function(data) {},
-					error: function(data) {
-						alert('An error occurred, please refresh your page and try again.');
-					  }
-					
-				});
-				$(this).parent().parent().parent().remove()
-				return false;
-			});
-			
-			$("[data-toggle=tooltip]").tooltip();
-
-			cardHeight = $('.card').width()*0.5
-			$('.card .image').each(function () {
-				$(this).css('height',cardHeight)
-			})
-			$('.card .information').each(function () {
-				$(this).css('height',cardHeight*0.4)
-			})
-
-			$( window ).resize(function() {
-				cardHeight = $('.card').width()*0.5
-				$('.card .image').each(function () {
-					$(this).css('height',cardHeight)
-				})
-
-				$('.card .information').each(function () {
-					$(this).css('height',cardHeight*0.4)
-				})
-			});
-			
-			//$('.card').each(function () {
-			//	$(this).on('mouseenter', function() {
-			//		$(this).find('#information').stop(true, false).animate({height:"100%"},500,function(){})
-			//		$(this).find('#actions').stop(true, false).animate({height:"44px"},0,function(){})
-			//	})
-			//})
-			
-			//$('.card').each(function () {
-			//	$(this).on('mouseleave', function() {
-			//		$(this).find('#information').stop(true, false).animate({height:"25%"},500,function(){})
-			//		$(this).find('#actions').stop(true, false).animate({height:"0%"},0,function(){})
-			//	})
-			//})
-		});
-
-
-		function validateNewVisualisatonForm() {
-			result = true
-			
-			
-			if ($('#modal_newVisualisation_input_name').val() === "") {
-				result = false;
-			}
-			if ($('#modal_newVisualisation_templateId').val() === "") {
-				result = false;
-			}
-
-			if (result === false) {
-				$('#modal_newVisualisation .alert').show()
-			}
-			return result
-		}
-
-		function validateNewTemplateForm() {
-			result = true
-			$('#modal_newTemplate .alert').hide()
-
-			if ($('#modal_newTemplate_input_name').val() === "") {
-				result = false;
-			}
-
-			if (result === false) {
-				$('#modal_newTemplate .alert').show()
-			}
-			return result
-		}
-	</script>
 </body>
 @page_footer()

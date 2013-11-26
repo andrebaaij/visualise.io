@@ -559,7 +559,7 @@ _vis.menu.element.group = function addGroup(id) {
 		
 		if (typeof group.label !== 'undefined' && group.label !== null && group.label.length > 0) {
 			$defaultInputGroupLabelDOM = $('<label></label>')
-			$defaultInputGroupDOM.append($defaultInputGroupLabelDOM.text(group.label))
+			$defaultInputGroupDOM.append($defaultInputGroupLabelDOM.text(group.label + " :"))
 		}
 		$.each(group.elements, function (index, element) {
 			$defaultInputGroupDOM.append(element.toDOM(element))
@@ -712,6 +712,9 @@ _vis.definition.get = function get(body) {
 }
 
 _vis.menu.draw = function draw() {
+	//Also remove old colorpickers.
+	$('div.colorpicker').remove();
+
 	$.each(_vis.menu.panels, function(index_panel, panel) {
 		if(typeof _vis.visualisation.parameters[_vis.common.escape(panel.id)] === 'undefined') _vis.visualisation.parameters[_vis.common.escape(panel.id)] = {}
 		$.each(panel.groups, function (index_group, group) {
